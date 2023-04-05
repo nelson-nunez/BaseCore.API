@@ -4,6 +4,7 @@ using BaseRest.Core.Model.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,16 @@ namespace BaseRest.Core.Controllers
         private readonly UnitOfWork unitOfWork;
         public IConfiguration Configuration { get; }
 
+        //TODO: solo para pureba
+        private readonly ILogger<AuthenticationController> logger;
 
-        public AuthenticationController(AuthenticationBusiness authenticationBusiness, UnitOfWork unitOfWork, IConfiguration configuration)
+        public AuthenticationController(AuthenticationBusiness authenticationBusiness, UnitOfWork unitOfWork, IConfiguration configuration, ILogger<AuthenticationController> logger)
         {
             this.authenticationBusiness = authenticationBusiness;
             this.unitOfWork = unitOfWork;
             Configuration = configuration;
+
+            this.logger = logger;
         }
 
         //Se podria agregar url encoded para mayor seguridad, tambien un objeto request signin
@@ -49,6 +54,7 @@ namespace BaseRest.Core.Controllers
             var jwtResult = GenerateTokens(username, claimList, DateTime.Now, 200);
             #endregion
 
+            logger.LogError("El usuario "+ username + " ingresó correctamente");
             return Ok(jwtResult);
         }
 

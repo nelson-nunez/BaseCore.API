@@ -4,14 +4,16 @@ using BaseRest.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BaseRest.Core.Model.Migrations
 {
     [DbContext(typeof(DbModelContext))]
-    partial class DbModelContextModelSnapshot : ModelSnapshot
+    [Migration("20230405211517_NewMigration4")]
+    partial class NewMigration4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +84,7 @@ namespace BaseRest.Core.Model.Migrations
                             Id = 1,
                             BirthDate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CUIL = "12345678910",
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 591, DateTimeKind.Local).AddTicks(3793),
+                            Created = new DateTime(2023, 4, 5, 18, 15, 16, 815, DateTimeKind.Local).AddTicks(6663),
                             GenderId = 1,
                             Name = "Juana Maria Perez",
                             Phone = "364412345678"
@@ -92,7 +94,7 @@ namespace BaseRest.Core.Model.Migrations
                             Id = 2,
                             BirthDate = new DateTime(1994, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CUIL = "12345678910",
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 592, DateTimeKind.Local).AddTicks(2204),
+                            Created = new DateTime(2023, 4, 5, 18, 15, 16, 817, DateTimeKind.Local).AddTicks(1221),
                             GenderId = 2,
                             Name = "Carlos Canto",
                             Phone = "364412345678"
@@ -102,7 +104,7 @@ namespace BaseRest.Core.Model.Migrations
                             Id = 3,
                             BirthDate = new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CUIL = "12345678910",
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 592, DateTimeKind.Local).AddTicks(2222),
+                            Created = new DateTime(2023, 4, 5, 18, 15, 16, 817, DateTimeKind.Local).AddTicks(1236),
                             GenderId = 3,
                             Name = "Manuel Sosa",
                             Phone = "364412345678"
@@ -149,19 +151,19 @@ namespace BaseRest.Core.Model.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 593, DateTimeKind.Local).AddTicks(3325),
+                            Created = new DateTime(2023, 4, 5, 18, 15, 16, 818, DateTimeKind.Local).AddTicks(2197),
                             Name = "Femenino"
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 593, DateTimeKind.Local).AddTicks(3335),
+                            Created = new DateTime(2023, 4, 5, 18, 15, 16, 818, DateTimeKind.Local).AddTicks(2205),
                             Name = "Masculino"
                         },
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 593, DateTimeKind.Local).AddTicks(3336),
+                            Created = new DateTime(2023, 4, 5, 18, 15, 16, 818, DateTimeKind.Local).AddTicks(2207),
                             Name = "Otro"
                         });
                 });

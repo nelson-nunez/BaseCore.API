@@ -14,6 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using System.Collections.Generic;
+using BaseRest.Core.API;
+using Serilog;
 
 namespace BaseRest.Core
 {
@@ -29,12 +31,6 @@ namespace BaseRest.Core
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Model Context
-            services.AddDbContext<DbModelContext>();
-            services.AddHttpContextAccessor();
-
-            services.AddControllers();
-
             #region SWAGGER
             //services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "BaseRest.Core", Version = "v1" }));
             services.AddSwaggerGen(c =>
@@ -65,27 +61,7 @@ namespace BaseRest.Core
                 });
             });
             #endregion
-
-            services.AddAutoMapper(typeof(AutoMapperProfile));
-           
-            #region Data Services
-
-            services.AddScoped<UnitOfWork, UnitOfWork>();
-
-            services.AddScoped<CustomerRepository, CustomerRepository>();
             
-            services.AddScoped<AppUserRepository, AppUserRepository>();
-            
-            #endregion
-
-            #region Business
-
-            services.AddScoped<CustomerBusiness, CustomerBusiness>();
-            
-            services.AddScoped<AuthenticationBusiness, AuthenticationBusiness>();
-
-            #endregion
-
             #region Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -102,6 +78,22 @@ namespace BaseRest.Core
                         };
                     });
             #endregion
+           
+            //Model Context
+            services.AddDbContext<DbModelContext>();
+            
+            services.AddHttpContextAccessor();
+
+            services.AddControllers();
+
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+            
+            services.AddInfraestructureServices();          
+
+            services.AddDataAccessServices();
+
+            services.AddBusinessServices();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

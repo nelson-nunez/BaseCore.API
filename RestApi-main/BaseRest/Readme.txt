@@ -26,9 +26,11 @@ INICIANDO PROYECTO
 15- Inyectar el dbcontext y contextaccesor en unitofwortk.
 16- Crear repositorio generico con las ppales acciones.
 17- crear un repositorio para la clase qque invoque el repogenerico. Se pueden agregar acciones no standar en este.
+	
 	CAPA BUSINESS:
 18- Crear un busines de la clase a trabajar con las consultas basicas. invocando las acciones del unitofwork.
 	Los datos tienen que trabajarse en base al modelo original, los dto se implementan recien del lado del controller.
+	
 	AUTOMAPPER:
 19- Instalar paquete AutoMapper.Extensions.Microsoft.DependencyInjection
 20- Añadir AutoMapperProfile y definir en el mismo las clases que se van a mapear.
@@ -42,8 +44,11 @@ INICIANDO PROYECTO
 25- Crear repo y un seed de un usuario basico.
 26- Configurar en el startup el autenticacion y token y dsps el swagger para que use bearer token.
 27- Configurar en services para que lea los token del swagger y en startup ->Configure poner app.UseAuthentication(); app.UseAuthorization();
-
-
+	
+	Serilog (https://www.codeproject.com/Articles/5344667/Logging-with-Serilog-in-ASP-NET-Core-Web-API)
+28- Se instala los paquetes Serilog.Sinks.MSSqlServer y Serilog.AspNetCore (este tiene mas compatibilidad con las versiones mas altas de .net)
+29- En el startup.cs o la clase nueva serviceextension se agrega la referencia y en la misma de donde sacar la configuración
+30- Agregar la escritura del log en la logica o usar su vinculación automatica con las excepciones y leerlo desde la db directamente
 
 
 
