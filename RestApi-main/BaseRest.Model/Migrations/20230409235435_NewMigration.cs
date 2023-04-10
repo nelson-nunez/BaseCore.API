@@ -86,25 +86,25 @@ namespace BaseRest.Core.Model.Migrations
                 columns: new[] { "Id", "Created", "CreatedBy", "Deleted", "DeletedBy", "Name", "Updated", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 11, 1, 1, 35, 24, 278, DateTimeKind.Local).AddTicks(2866), null, null, null, "Femenino", null, null },
-                    { 2, new DateTime(2022, 11, 1, 1, 35, 24, 278, DateTimeKind.Local).AddTicks(2880), null, null, null, "Masculino", null, null },
-                    { 3, new DateTime(2022, 11, 1, 1, 35, 24, 278, DateTimeKind.Local).AddTicks(2881), null, null, null, "Otro", null, null }
+                    { 1, new DateTime(2023, 4, 9, 20, 54, 34, 466, DateTimeKind.Local).AddTicks(7295), null, null, null, "Femenino", null, null },
+                    { 2, new DateTime(2023, 4, 9, 20, 54, 34, 466, DateTimeKind.Local).AddTicks(7339), null, null, null, "Masculino", null, null },
+                    { 3, new DateTime(2023, 4, 9, 20, 54, 34, 466, DateTimeKind.Local).AddTicks(7344), null, null, null, "Otro", null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Customer",
                 columns: new[] { "Id", "BirthDate", "CUIL", "Created", "CreatedBy", "Deleted", "DeletedBy", "GenderId", "Name", "Phone", "Updated", "UpdatedBy" },
-                values: new object[] { 1, new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "12345678910", new DateTime(2022, 11, 1, 1, 35, 24, 276, DateTimeKind.Local).AddTicks(3922), null, null, null, 1, "Juana Maria Perez", "364412345678", null, null });
+                values: new object[] { 1, new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "12345678910", new DateTime(2023, 4, 9, 20, 54, 34, 463, DateTimeKind.Local).AddTicks(8434), null, null, null, 1, "Juana Maria Perez", "364412345678", null, null });
 
             migrationBuilder.InsertData(
                 table: "Customer",
                 columns: new[] { "Id", "BirthDate", "CUIL", "Created", "CreatedBy", "Deleted", "DeletedBy", "GenderId", "Name", "Phone", "Updated", "UpdatedBy" },
-                values: new object[] { 2, new DateTime(1994, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "12345678910", new DateTime(2022, 11, 1, 1, 35, 24, 277, DateTimeKind.Local).AddTicks(2037), null, null, null, 2, "Carlos Canto", "364412345678", null, null });
+                values: new object[] { 2, new DateTime(1994, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "12345678910", new DateTime(2023, 4, 9, 20, 54, 34, 465, DateTimeKind.Local).AddTicks(2574), null, null, null, 2, "Carlos Canto", "364412345678", null, null });
 
             migrationBuilder.InsertData(
                 table: "Customer",
                 columns: new[] { "Id", "BirthDate", "CUIL", "Created", "CreatedBy", "Deleted", "DeletedBy", "GenderId", "Name", "Phone", "Updated", "UpdatedBy" },
-                values: new object[] { 3, new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "12345678910", new DateTime(2022, 11, 1, 1, 35, 24, 277, DateTimeKind.Local).AddTicks(2056), null, null, null, 3, "Manuel Sosa", "364412345678", null, null });
+                values: new object[] { 3, new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "12345678910", new DateTime(2023, 4, 9, 20, 54, 34, 465, DateTimeKind.Local).AddTicks(2611), null, null, null, 3, "Manuel Sosa", "364412345678", null, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customer_GenderId",

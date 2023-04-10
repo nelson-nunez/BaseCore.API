@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -55,7 +56,7 @@ namespace BaseRest.Core.Controllers
             #endregion
 
             logger.LogError("El usuario "+ username + " ingresó correctamente");
-            return Ok(jwtResult);
+            return Ok(jwtResult);           
         }
 
         public async Task<JwtAuthResult> GenerateTokens(string username, Claim[] claims, DateTime now, int accessTokenExpiration)

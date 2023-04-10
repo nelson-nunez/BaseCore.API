@@ -47,8 +47,9 @@ INICIANDO PROYECTO
 	
 	Serilog (https://www.codeproject.com/Articles/5344667/Logging-with-Serilog-in-ASP-NET-Core-Web-API)
 28- Se instala los paquetes Serilog.Sinks.MSSqlServer y Serilog.AspNetCore (este tiene mas compatibilidad con las versiones mas altas de .net)
-29- En el startup.cs o la clase nueva serviceextension se agrega la referencia y en la misma de donde sacar la configuración
+29- En el Program.cs se agrega la referencia y en la misma de donde sacar la configuración
 30- Agregar la escritura del log en la logica o usar su vinculación automatica con las excepciones y leerlo desde la db directamente
+
 
 
 

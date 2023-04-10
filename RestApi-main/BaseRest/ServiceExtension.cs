@@ -1,9 +1,12 @@
 ﻿using BaseRest.Core.Business;
 using BaseRest.Core.DataAccess;
 using BaseRest.Core.DataAccess.Repository;
+using Castle.Core.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +19,7 @@ namespace BaseRest.Core.API
     {
         public static void AddInfraestructureServices(this IServiceCollection services)
         {
-            services.AddSingleton((LoggerConfiguration)
-                new LoggerConfiguration().ReadFrom.Configuration(AppConfiguration.Configuration, "SerilogErrorLog").Enrich.FromLogContext());
+
         }
 
         public static void AddDataAccessServices(this IServiceCollection services)

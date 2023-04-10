@@ -82,7 +82,7 @@ namespace BaseRest.Core.Model.Migrations
                             Id = 1,
                             BirthDate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CUIL = "12345678910",
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 591, DateTimeKind.Local).AddTicks(3793),
+                            Created = new DateTime(2023, 4, 9, 20, 54, 34, 463, DateTimeKind.Local).AddTicks(8434),
                             GenderId = 1,
                             Name = "Juana Maria Perez",
                             Phone = "364412345678"
@@ -92,7 +92,7 @@ namespace BaseRest.Core.Model.Migrations
                             Id = 2,
                             BirthDate = new DateTime(1994, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CUIL = "12345678910",
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 592, DateTimeKind.Local).AddTicks(2204),
+                            Created = new DateTime(2023, 4, 9, 20, 54, 34, 465, DateTimeKind.Local).AddTicks(2574),
                             GenderId = 2,
                             Name = "Carlos Canto",
                             Phone = "364412345678"
@@ -102,7 +102,7 @@ namespace BaseRest.Core.Model.Migrations
                             Id = 3,
                             BirthDate = new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CUIL = "12345678910",
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 592, DateTimeKind.Local).AddTicks(2222),
+                            Created = new DateTime(2023, 4, 9, 20, 54, 34, 465, DateTimeKind.Local).AddTicks(2611),
                             GenderId = 3,
                             Name = "Manuel Sosa",
                             Phone = "364412345678"
@@ -149,19 +149,19 @@ namespace BaseRest.Core.Model.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 593, DateTimeKind.Local).AddTicks(3325),
+                            Created = new DateTime(2023, 4, 9, 20, 54, 34, 466, DateTimeKind.Local).AddTicks(7295),
                             Name = "Femenino"
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 593, DateTimeKind.Local).AddTicks(3335),
+                            Created = new DateTime(2023, 4, 9, 20, 54, 34, 466, DateTimeKind.Local).AddTicks(7339),
                             Name = "Masculino"
                         },
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(2023, 4, 5, 18, 18, 50, 593, DateTimeKind.Local).AddTicks(3336),
+                            Created = new DateTime(2023, 4, 9, 20, 54, 34, 466, DateTimeKind.Local).AddTicks(7344),
                             Name = "Otro"
                         });
                 });
