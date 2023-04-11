@@ -55,7 +55,6 @@ namespace BaseRest.Core.Controllers
             var jwtResult = GenerateTokens(username, claimList, DateTime.Now, 200);
             #endregion
 
-            logger.LogError("El usuario "+ username + " ingresó correctamente");
             return Ok(jwtResult);           
         }
 

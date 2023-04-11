@@ -47,8 +47,11 @@ INICIANDO PROYECTO
 	
 	Serilog (https://www.codeproject.com/Articles/5344667/Logging-with-Serilog-in-ASP-NET-Core-Web-API)
 28- Se instala los paquetes Serilog.Sinks.MSSqlServer y Serilog.AspNetCore (este tiene mas compatibilidad con las versiones mas altas de .net)
-29- En el Program.cs se agrega la referencia y en la misma de donde sacar la configuración
-30- Agregar la escritura del log en la logica o usar su vinculación automatica con las excepciones y leerlo desde la db directamente
+29- En el Program.cs se agrega en Main la configuracion del appsetting y se inicializa con su configuración Logger mediante CreateLogger
+30- Se crea la clase SerilogConfiguration donde se configuran las opciones de las columnas y y la tabla de sql donde se grabará 
+31- En appsettings se graban las configuraciones comunes como link de conexion y funciones que se pueden definir tambine en el program.cs
+32- Se crea la clase ExceptionHandlingMiddleware donde se van a atrapar las excepciones, se las formatea y se las enriquece a traves del contexto antes de guardarlas en el log db
+33- Agregar en la clase StartUp.cs en el metodo Configure el uso del middleware para la captura de excepciones
 
 
 

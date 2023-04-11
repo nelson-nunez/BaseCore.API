@@ -16,6 +16,7 @@ using System.Text;
 using System.Collections.Generic;
 using BaseRest.Core.API;
 using Serilog;
+using BaseRest.Core.API.LogsConfiguration;
 
 namespace BaseRest.Core
 {
@@ -108,6 +109,7 @@ namespace BaseRest.Core
 
             app.UseHttpsRedirection();
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseRouting();
 
             app.UseAuthentication();
