@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using BaseRest.Core.API;
 using Serilog;
 using BaseRest.Core.API.LogsConfiguration;
+using BaseRest.Core.API.Common;
 
 namespace BaseRest.Core
 {
@@ -78,8 +79,10 @@ namespace BaseRest.Core
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]))
                         };
                     });
+            services.AddSingleton<IJwtAuthManager, JwtAuthManager>();
+
             #endregion
-           
+
             //Model Context
             services.AddDbContext<DbModelContext>();
             
@@ -87,13 +90,13 @@ namespace BaseRest.Core
 
             services.AddControllers();
 
-            services.AddAutoMapper(typeof(AutoMapperProfile));
-            
-            services.AddInfraestructureServices();          
+            services.AddAutoMapper(typeof(AutoMapperProfile));          
 
             services.AddDataAccessServices();
 
             services.AddBusinessServices();
+
+            services.AddInfraestructureServices();
 
         }
 

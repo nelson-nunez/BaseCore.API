@@ -1,0 +1,144 @@
+﻿@inherits LayoutComponentBase
+@using BaseUI.Components
+@inject NavigationManager Navigation
+
+
+
+<CascadingValue Value="@this">
+    <Syncfusion.Blazor.Spinner.SfSpinner @ref="@SpinnerObj" Type="Syncfusion.Blazor.Spinner.SpinnerType.HighContrast" Label="Cargando..." Size="40" CssClass="e-spin-overlay" ZIndex="9999"></Syncfusion.Blazor.Spinner.SfSpinner>
+    <div class="page">
+        <AuthorizeView>
+            <Authorized>
+                <div class="sidebar">
+                    <NavMenu />
+                </div>
+            </Authorized>
+        </AuthorizeView>
+        
+        <div class="main">
+            <AuthorizeView>
+                <Authorized>
+                    <div class="top-row px-4">
+                        <a href="Identity/Account/Logout"
+                           class="font-weight-bold text-danger">
+                            Cerrar Sesión <i class=""></i>
+                        </a>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+            <div class="content px-4">
+                @Body
+                <MessageCardComponent @ref="messageCardComponent"></MessageCardComponent>
+            </div>
+        </div>
+    </div>
+</CascadingValue>
+
+<style>
+    .custom-container {
+        height: 100vh !important;
+    }
+
+    /*Centra en el medio vertical de la pantalla*/
+    .custom-full-center {
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .custom-headers {
+        color: #006674;
+        text-align: left;
+        margin: 0 0 0.3rem 0;
+    }
+
+    .principal-button {
+        background-color: #7dc243 !important;
+        border-radius: 3px !important;
+        margin: 1rem;
+        padding: 0.5rem 2rem 0.5rem 2rem !important;
+    }
+
+    /*Card*/
+    .card, .card-body, .custom-headers, .card-footer {
+        padding: 0.25rem !important;
+        /*border: hidden;*/
+        border-color: transparent;
+    }
+
+    /* To specify height and font size */
+    .e-input:not(:valid), .e-input:valid, .e-float-input.e-control-wrapper input:not(:valid), .e-float-input.e-control-wrapper input:valid, .e-float-input input:not(:valid), .e-float-input input:valid, .e-input-group input:not(:valid), .e-input-group input:valid, .e-input-group.e-control-wrapper input:not(:valid), .e-input-group.e-control-wrapper input:valid, .e-float-input.e-control-wrapper textarea:not(:valid), .e-float-input.e-control-wrapper textarea:valid, .e-float-input textarea:not(:valid), .e-float-input textarea:valid, .e-input-group.e-control-wrapper textarea:not(:valid), .e-input-group.e-control-wrapper textarea:valid, .e-input-group textarea:not(:valid), .e-input-group textarea:valid {
+        padding: 0 5px;
+        text-align: left;
+        height: 100%;
+        vertical-align: middle;
+        font-size: 1.3em;
+    }
+
+    /*TextBoxs Inputs*/
+    .custom-input-text {
+        margin-top: 2rem !important;
+        text-align: left !important;
+        height: 2.7rem;
+    }
+
+        .custom-input-text:focus {
+            background-color: #7dc243 !important;
+            color: white !important;
+            transform: translate3d(-10px, -43px, 0) scale(1)
+        }
+
+    input[type=text]:focus, input[type=password]:focus {
+        background-color: #7dc243 !important;
+        color: white !important;
+    }
+
+    .e-float-input.e-control-wrapper:not(.e-error) input:valid ~ label.e-float-text, .e-float-input.e-control-wrapper:not(.e-error) input ~ label.e-label-top.e-float-text {
+        color: #696969 !important;
+        font-family: Montserrat;
+        transform: translate3d(-10px, -43px, 0) scale(1)
+    }
+
+    .form-group {
+        width: 100% !important;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+@code{
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    public AuthenticationState authenticationState;
+    protected override async void OnParametersSet()
+    {
+        authenticationState = await AuthenticationStateTask;
+    }
+   
+    #region MessageCardComponent
+
+    private MessageCardComponent messageCardComponent;
+
+    public async Task ShowCardMessage(string type, string message, string title = "", string url = "")
+    {
+        await messageCardComponent.ShowMessage(type, message, title, url);
+    }
+
+    #endregion
+
+    #region Spinner Global
+
+    private Syncfusion.Blazor.Spinner.SfSpinner SpinnerObj;
+
+    public async Task ShowSpinner()
+    {
+        await SpinnerObj.ShowAsync();
+    }
+
+    public async Task HideSpinner()
+    {
+        await SpinnerObj.HideAsync();
+    }
+
+    #endregion
+}

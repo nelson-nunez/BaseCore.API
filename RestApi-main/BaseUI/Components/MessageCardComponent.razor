@@ -1,0 +1,232 @@
+﻿@using Syncfusion.Blazor.Popups
+@using System.Threading
+@using BaseUI.Data
+@inject NavigationManager NavManager
+
+<SfDialog @ref="@Dialog" IsModal="true" Visible="false" Width="500" CssClass="dlg-messageviewer">
+    <DialogTemplates>
+        <Header>
+            <div class="row my-auto">
+                <img class="rounded float-left pull-left  p-2 mx-2" src="@ImageRoute" style="max-height: 4rem;" />
+                <h3 class="dlg-messageviewer e-dlg-header float-left pull-left p-2 my-auto"> @Title </h3>
+            </div>
+        </Header>
+        <Content>
+            <p>@Message</p>
+        </Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="DialogEffect.FadeZoom" Duration=400 />
+    <DialogButtons>
+        @{
+            switch (Type)
+            {
+                case MessageTypes.Information:
+                    <button type="button" class="btn btn-primary float-right mt-3" @onclick="@CloseMessage"> <i class="fas fa-check"></i> Continuar </button>
+                    break;
+                case MessageTypes.InformationAction:
+                    <button type="button" class="btn btn-primary float-right mt-3" @onclick="@OnClickAction"> <i class="fas fa-check"></i> Continuar </button>
+                    break;
+                case MessageTypes.Error:
+                case MessageTypes.Warning:
+                    <button type="button" class="btn btn-primary float-right mt-3" @onclick="@CloseMessage"> <i class="fas fa-check"></i> Continuar </button>
+                    break;
+                case MessageTypes.Question:
+                case MessageTypes.Confirmation:
+                    <div class="row mt-3 mx-3 float-right">
+                        <button type="button" class="btn  btn-secondary  ml-2" @onclick="() => OnConfirmationChange(false)"> <i class="fas fa-times"></i> No </button>
+                        <button type="button" class="btn  btn-primary  ml-2" @onclick="() => OnConfirmationChange(true)"> <i class="fas fa-check"></i> Si </button>
+                    </div>
+                    break;
+            }
+        }
+    </DialogButtons>
+</SfDialog>
+
+<!--#region Styles  -->
+<style>
+    .dlg-messageviewer .e-dlg-header {
+        font-size: 20px;
+        font-weight: normal;
+    }
+
+    .dlg-messageviewer .e-dlg-content, .dlg-messageviewer .e-dlg-header-content, .dlg-messageviewer .e-footer-content {
+        border-bottom: 0px;
+        border-top: 0px;
+    }
+
+    .e-dlg-overlay {
+        background-color: slategray;
+        opacity: 0.6;
+    }
+
+    .dlg-messageviewer .e-btn.e-flat, .e-css.e-btn.e-flat {
+        padding: 10px;
+        border-color: transparent;
+        background-color: RGB(122,155,232);
+    }
+
+    .CustomButton-Dialog {
+        width: 4rem;
+        border-radius: 5px;
+    }
+</style>
+
+@{
+    switch (Type)
+    {
+        case MessageTypes.Information:
+            <style>
+                .dlg-messageviewer .e-dlg-header {
+                    color: navy;
+                }
+
+                .dlg-messageviewer, .dlg-messageviewer .e-dlg-content, .dlg-messageviewer .e-dlg-header-content, .dlg-messageviewer .e-footer-content {
+                    background-color: RGB(170,214,239);
+                }
+            </style>
+            break;
+        case MessageTypes.InformationAction:
+            <style>
+                .dlg-messageviewer .e-dlg-header {
+                    color: navy;
+                }
+
+                .dlg-messageviewer, .dlg-messageviewer .e-dlg-content, .dlg-messageviewer .e-dlg-header-content, .dlg-messageviewer .e-footer-content {
+                    background-color: RGB(170,214,239);
+                }
+            </style>
+            break;
+        case MessageTypes.Error:
+            <style>
+                .dlg-messageviewer .e-dlg-header {
+                    color: red !important;
+                }
+                .dlg-messageviewer, .dlg-messageviewer .e-dlg-content, .dlg-messageviewer .e-dlg-header-content, .dlg-messageviewer .e-footer-content {
+                    background-color: RGB(239,170,181) !important;
+                }
+            </style>
+            break;
+        case MessageTypes.Warning:
+            <style>
+                .dlg-messageviewer .e-dlg-header {
+                    color: RGB(204,102,0) !important;
+                }
+
+                .dlg-messageviewer, .dlg-messageviewer .e-dlg-content, .dlg-messageviewer .e-dlg-header-content, .dlg-messageviewer .e-footer-content {
+                    background-color: #fbeaa8 !important;
+                }
+            </style>
+            break;
+        case MessageTypes.Question:
+            <style>
+                .dlg-messageviewer .e-dlg-header {
+                    color: black !important;
+                }
+
+                .dlg-messageviewer, .dlg-messageviewer .e-dlg-content, .dlg-messageviewer .e-dlg-header-content, .dlg-messageviewer .e-footer-content {
+                    background-color: white !important;
+                }
+            </style>
+            break;
+    }
+}
+<!--#endregion -->
+
+@code{
+    #region Vars
+
+    public SfDialog Dialog { get; set; }
+
+    public string Title { get; set; }
+
+    public string Message { get; set; }
+
+    public string Type { get; set; }
+
+    public string Url { get; set; }
+
+    private string ImageRoute { get; set; }
+
+    private bool Visible = false;
+
+    #endregion
+
+    #region Methods
+
+    public async Task ShowException(Exception ex)
+    {
+        switch (ex)
+        {
+            default:
+                await ShowMessage(MessageTypes.Warning, ex.Message);
+                break;
+        }
+    }
+
+    public async Task ShowMessage(string type, string message, string title = "", string url = "")
+    {
+        switch (type)
+        {
+            case MessageTypes.Information:
+                Title ??= "Información";
+                ImageRoute = "/images/information.png";
+                break;
+            case MessageTypes.InformationAction:
+                Title ??= "Confirmación";
+                ImageRoute = "/images/information.png";
+                break;
+            case MessageTypes.Confirmation:
+                Title ??= "Atención";
+                ImageRoute = "/images/question.png";
+                break;
+            case MessageTypes.Question:
+                Title ??= "Información";
+                ImageRoute = "/images/question.png";
+                break;
+            case MessageTypes.Warning:
+                Title = "Advertencia";
+                ImageRoute = "/images/warning.png";
+                break;
+            case MessageTypes.Error:
+                Title = "Error";
+                ImageRoute = "/images/error.png";
+                break;
+            default:
+                break;
+        }
+
+        Title = !String.IsNullOrEmpty(title) ? title : Title;
+        Message = message;
+        Url = url;
+
+        await Dialog.Show();
+        StateHasChanged();
+    }
+
+    #endregion
+
+    #region Actions
+
+    public void OnClickAction()
+    {
+        CloseMessage();
+        NavManager.NavigateTo(Url);
+    }
+
+    public void CloseMessage()
+    {
+        Dialog.HideAsync();
+        StateHasChanged();
+    }
+
+    [Parameter]
+    public EventCallback<bool> ConfirmationChanged { get; set; }
+
+    protected async Task OnConfirmationChange(bool value)
+    {
+        CloseMessage();
+        await ConfirmationChanged.InvokeAsync(value);
+    }
+
+    #endregion
+}

@@ -64,37 +64,28 @@ namespace BaseRest.Core.Model
         }
         private static void SeedCustomer(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>().HasData(
-            new Customer
+
+            var customers = new List<Customer>();
+
+            for (int i = 1; i <= 40; i++)
             {
-                Id = 1,
-                Name = "Juana Maria Perez",
-                BirthDate = new DateTime(1990, 1, 1),
-                CUIL = "12345678910",
-                GenderId = 1,
-                Phone = "364412345678",
-                Created = DateTime.Now,
-            },            
-            new Customer
+                customers.Add(new Customer
+                {
+                    Id = i,
+                    Name = $"Customer {i}",
+                    BirthDate = DateTime.Now.AddYears(-30).AddMonths(i),
+                    CUIL = "12345678910",
+                    GenderId = 1,
+                    Phone = "364412345678",
+                    Created = DateTime.Now,
+                });
+            }
+
+            // Agregar los objetos Customer al modelBuilder utilizando HasData
+            foreach (var customer in customers)
             {
-                Id = 2,
-                Name = "Carlos Canto",
-                BirthDate = new DateTime(1994, 1, 1),
-                CUIL = "12345678910",
-                GenderId = 2,
-                Phone = "364412345678",
-                Created = DateTime.Now,
-            },            
-            new Customer
-            {
-                Id = 3,
-                Name = "Manuel Sosa",
-                BirthDate = new DateTime(1980, 1, 1),
-                CUIL = "12345678910",
-                GenderId = 3,
-                Phone = "364412345678",
-                Created = DateTime.Now,
-            });
+                modelBuilder.Entity<Customer>().HasData(customer);
+            }
         }
         private static void SeedGender(ModelBuilder modelBuilder)
         {

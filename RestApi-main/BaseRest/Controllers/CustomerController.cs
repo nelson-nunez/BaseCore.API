@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BaseRest.Core.Model.Base;
 using BaseRest.Core.Business;
 using BaseRest.Core.Model;
 using BaseRest.Core.Model.DTO;
@@ -12,8 +13,7 @@ using System.Threading.Tasks;
 
 namespace BaseRest.Core.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CustomerController : Controller
     {
@@ -28,28 +28,42 @@ namespace BaseRest.Core.Controllers
             this.customerBusiness = customerBusiness;
         }
 
-        //[HttpGet()]
-        //public async Task<ActionResult<CustomerDTO>> GetAllResellers([FromQuery] Request request)
-        //{
-        //    CustomerDTO customer = new CustomerDTO
-        //    {
-        //        Id = 1,
-        //        Name = "Juan Perez",
-        //        BirthDate = new DateTime(1990, 1, 1),
-        //        CUIL = "12345678910",
-        //        GenderId = 1,
-        //        Phone = "364412345678",
-        //        Created = DateTime.Now,
-        //    };
-        //    return Ok(customer);
-        //}
-
         [HttpGet()]
         public async Task<ActionResult<CustomerDTO>> GetAllResellers()
         {
             var list = await customerBusiness.GetAsync();
             var dto = mapper.Map<IList<CustomerDTO>>(list);
             return Ok(dto);
+        }
+
+        [HttpGet("PagedData")]
+        public async Task<ActionResult<PagedDataResponse<CustomerDTO>>> GetAllResellers([FromQuery] PagingSortFilterRequest request)
+        {
+            //Fix orderBy properties out entity
+            var orderDirection = "";
+            if (!string.IsNullOrEmpty(request.OrderBy) && request.OrderBy[0] == '-')
+            {
+                orderDirection = "-";
+                request.OrderBy = request.OrderBy.Substring(1);
+            }
+            switch (request.OrderBy)
+            {
+                case "Name":
+                    request.OrderBy = $"{orderDirection}Person.Name";
+                    break;
+                default:
+                    request.OrderBy = "-Id";
+                    break;
+            }
+
+            var result = await customerBusiness.GetPagedResultAsync(request);
+            var response = new PagedDataResponse<CustomerDTO> { Results = new List<CustomerDTO>() };
+            response.PageCount = result.PageCount;
+            response.PageIndex = result.PageIndex;
+            response.PageSize = result.PageSize;
+            response.RowCount = result.RowCount;
+            response.Results = mapper.Map<List<CustomerDTO>>(result.Results);
+            return Ok(response);
         }
 
         [HttpPost()]

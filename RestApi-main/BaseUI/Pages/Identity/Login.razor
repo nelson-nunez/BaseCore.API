@@ -1,0 +1,153 @@
+﻿@page "/LoginPage"
+@attribute [AllowAnonymous]
+
+@using Syncfusion.Blazor.Inputs
+@using BaseUI.Services
+@using BaseUI.Data
+@using BaseUI.Helpers
+@using BaseUI.Components
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json;
+
+@inject IHttpContextAccessor contextAccessor
+@inject NavigationManager NavigationManager
+@inject AuthenticationService autenticationService
+
+<EditForm Model="@input" OnValidSubmit="@LoginAsync">
+    <FluentValidator TValidator="LoginInputValidator" />
+
+    <div class="row custom-full-center">
+        <div class="card">
+            <h2 class="custom-headers m-0">Mi cuenta</h2>
+            <section>
+                @*Username*@
+                <div class="row align-self-center ">
+                    <div class="form-group align-self-center ">
+                        <SfTextBox Placeholder='Ingresá tu email'
+                                   CssClass="custom-input-text"
+                                   Type="InputType.Text"
+                                   @bind-Value="@input.UserName"
+                                   FloatLabelType='@FloatLabelType.Auto'
+                                   TabIndex="1">
+                        </SfTextBox>
+                        <ValidationMessage For="() => input.UserName"></ValidationMessage>
+                    </div>
+                </div>
+
+                @*Password*@
+                <div class="row align-self-center">
+                    <div class="form-group align-items-center align-self-center ">
+                        <SfTextBox Placeholder='Contraseña'
+                                   CssClass="custom-input-text"
+                                   Type="InputType.Password"
+                                   @bind-Value="@input.Password"
+                                   FloatLabelType='@FloatLabelType.Auto'
+                                   TabIndex="2">
+                        </SfTextBox>
+                        <ValidationMessage For="() => input.Password"></ValidationMessage>
+                    </div>
+                </div>
+                <hr />
+
+                <div class="form-inline mb-4">
+                    <a class="links-help mx-2"
+                       style="color: #7dc243; text-decoration: unset; cursor: pointer"
+                       tabindex="5"
+                       @onclick="@(e=>NavigateToAsync("/PasswordRecoveryPage"))">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                    <span class="separador" style="color: #7dc243"> | </span>
+                    <a class="links-help mx-2"
+                       style="color: #7dc243; text-decoration: unset; cursor: pointer"
+                       tabindex="6"
+                       @onclick="@(e=>NavigateToAsync("/EmailRecoveryPage"))">
+                        ¿Olvidaste tu email?
+                    </a>
+                </div>
+            </section>
+            <div class="d-flex justify-content-end my-auto p-0">
+                <button type="submit"
+                        class="btn principal-button text-white"
+                        tabindex="3">
+                    Ingresar
+                </button>
+                <a href="https://www.google.com"
+                   class="links-help my-auto text-decoration-none"
+                   style="color: #7dc243"
+                   tabindex="4">
+                    Registrarse
+                </a>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    #region Vars
+
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    [CascadingParameter]
+    public MainLayout mainLayoutObj { get; set; }
+
+    private bool VisibleProperty { get; set; } = false;
+
+    public InputModel input { get; set; } = new InputModel();
+
+    #endregion
+
+    protected override async void OnInitialized()
+    {
+        #region Revisa el estado del logueo
+        var authenticationState = await AuthenticationStateTask;
+        if (authenticationState?.User?.Identity != null && authenticationState.User.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo($"Identity/Account/Logout", forceLoad: true);
+            return;
+        }
+        #endregion
+    }
+
+    public async Task LoginAsync()
+    {
+        try
+        {
+            input.UserName = input.UserName.Replace(" ", String.Empty);
+            input.Password = input.Password.Replace(" ", String.Empty);
+            if (string.IsNullOrEmpty(input.UserName) || string.IsNullOrEmpty(input.Password))
+            {
+                await mainLayoutObj.ShowCardMessage(MessageTypes.Warning, "Ingrese su usuario y contraseña.");
+                return;
+            }
+            #region MyRegion
+
+            await mainLayoutObj.ShowSpinner();
+            var authenticationResult = await autenticationService.Authenticate(input.UserName, input.Password);
+            if (!string.IsNullOrEmpty(authenticationResult.AccessToken))
+            {
+                var jsonStr = JsonConvert.SerializeObject(authenticationResult);
+                NavigationManager.NavigateTo($"Identity/Account/Login?jsonStr={jsonStr}", forceLoad: true);
+            }
+            else
+            {
+                await mainLayoutObj.ShowCardMessage(MessageTypes.Warning, "Usuario o contraseña incorrectos. Intente nuevamente.");
+            }
+
+            #endregion
+        }
+        catch (Exception ex)
+        {
+            await mainLayoutObj.ShowCardMessage(MessageTypes.Error, ex.Message);
+        }
+        finally
+        {
+            await mainLayoutObj.HideSpinner();
+        }
+    }
+
+    public async Task NavigateToAsync(string url)
+    {
+        NavigationManager.NavigateTo(url, forceLoad: true);
+    }
+}

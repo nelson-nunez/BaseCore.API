@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseRest.Core.Business", "B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseRest.Core.DataAccess", "BaseRest.DataAccess\BaseRest.Core.DataAccess.csproj", "{2AC009FB-9EAA-4B8D-8866-F407854A18D4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseUI", "BaseUI\BaseUI.csproj", "{5043121B-0552-4CB9-8236-4FEA4484BC8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2AC009FB-9EAA-4B8D-8866-F407854A18D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AC009FB-9EAA-4B8D-8866-F407854A18D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AC009FB-9EAA-4B8D-8866-F407854A18D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5043121B-0552-4CB9-8236-4FEA4484BC8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5043121B-0552-4CB9-8236-4FEA4484BC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5043121B-0552-4CB9-8236-4FEA4484BC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5043121B-0552-4CB9-8236-4FEA4484BC8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

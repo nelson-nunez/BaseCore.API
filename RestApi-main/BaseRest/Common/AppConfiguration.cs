@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace BaseRest.Core.API
+namespace BaseRest.Core.API.Common
 {
     public static class AppConfiguration
     {

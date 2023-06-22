@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseRest.Core.Model.Model
+namespace BaseRest.Core.API.Common
 {
     public class JwtTokenConfig
     {

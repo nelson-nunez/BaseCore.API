@@ -1,4 +1,6 @@
 ﻿using BaseRest.Core.Model;
+using BaseRest.Core.Model.Base;
+using BaseRest.Core.Model.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -134,6 +136,32 @@ namespace BaseRest.Core.DataAccess.Repository
 
             return result;
         }
+
+        public virtual async Task<PagedDataResponse<TEntity>> GetPagedResultAsync(string filterBy, string filterValue, Expression<Func<TEntity, bool>> filter, string orderBy, int pageSize, int pageIndex)
+        {
+            var query = dbSet.AsQueryable();
+
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(filterBy) && !string.IsNullOrEmpty(filterBy))
+                query = query.GetQueryFilterBy(filterBy, filterValue);
+
+            int rowCount = query.Count();
+
+            query = query.GetQueryOrderBy(orderBy);
+
+            query = query.GetQueryPaged(pageSize, pageIndex, orderBy);
+
+            var result = await query.ToListAsync();
+
+            var pagedDataResult = new PagedDataResponse<TEntity>(pageIndex, pageSize, rowCount, result);
+
+            return pagedDataResult;
+        }
+
         public virtual async Task<TEntity> FindAsync(object id)
         {
             return await dbSet.FindAsync(id);

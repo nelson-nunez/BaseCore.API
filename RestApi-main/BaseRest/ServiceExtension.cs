@@ -1,4 +1,5 @@
-﻿using BaseRest.Core.Business;
+﻿using BaseRest.Core.API.Common;
+using BaseRest.Core.Business;
 using BaseRest.Core.DataAccess;
 using BaseRest.Core.DataAccess.Repository;
 using Castle.Core.Configuration;

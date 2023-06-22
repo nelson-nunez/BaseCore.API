@@ -1,0 +1,55 @@
+﻿@using System.Timers
+@attribute [AllowAnonymous]
+@inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
+
+
+@code {
+    private Timer timerObj;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        #region Revisa el estado del logueo
+        var authenticationState = await AuthenticationStateTask;
+        if (authenticationState?.User?.Identity is null || !authenticationState.User.Identity.IsAuthenticated)
+        {
+            NavManager.NavigateTo("/LoginPage", forceLoad: true);
+        }
+        #endregion
+
+        #region Revisa el tiempo de inactividad
+        var automaticLogoutTime = 600000;
+        // Set the Timer delay.
+        timerObj = new Timer(Convert.ToDouble(automaticLogoutTime));
+        timerObj.Elapsed += UpdateTimer;
+        timerObj.AutoReset = false;
+        // Identify whether the user is active or inactive using onmousemove and onkeypress in JS function.
+        await JSRuntime.InvokeVoidAsync("timeOutCall", DotNetObjectReference.Create(this));
+        #endregion
+    }
+
+    [JSInvokable]
+    public void TimerInterval()
+    {
+        // Resetting the Timer if the user in active state.
+        timerObj.Stop();
+        // Call the TimeInterval to logout when the user is inactive.
+        timerObj.Start();
+    }
+
+    private void UpdateTimer(Object source, ElapsedEventArgs e)
+    {
+        InvokeAsync(async () =>
+        {
+            // Log out when the user is inactive.
+            var authstate = await AuthenticationStateTask;
+            if (authstate.User.Identity.IsAuthenticated)
+            {
+                NavManager.NavigateTo("/LoginPage", forceLoad: true);
+            }
+        });
+    }
+}

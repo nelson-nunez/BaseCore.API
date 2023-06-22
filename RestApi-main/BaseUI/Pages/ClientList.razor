@@ -1,0 +1,124 @@
+﻿@page "/ClientList"
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Data
+@using BaseRest.Core.Model.DTO
+@using BaseUI.Data
+@using BaseUI.Services
+
+
+@inject NavigationManager NavManager
+@inject CustomerService CustomerService
+
+
+
+<SfGrid ID="Grid" @ref="@Grid"
+        Query="@GridQry"
+        TValue="CustomerDTO"
+        Toolbar="@Toolbaritems"
+        AllowPaging="true"
+        AllowSorting="true"
+        EnableAltRow="true"
+        AllowReordering="true"
+        Width="100%"
+        AllowExcelExport="true">
+    <GridEvents TValue="CustomerDTO"></GridEvents>
+    <SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>
+    <GridColumns>
+        <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="GetSelectedRecords" TValue="CustomerDTO"></GridEvents>
+        <GridColumn Field=@nameof(CustomerDTO.Id) AllowSorting="false" HeaderText="ID" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(CustomerDTO.Name) AllowSorting="false" HeaderText="Nombre" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" MinWidth="150"></GridColumn>
+        <GridColumn Field=@nameof(CustomerDTO.BirthDate) AllowSorting="false" HeaderText="Fech. Nac." HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" MinWidth="120"></GridColumn>
+        <GridColumn Field=@nameof(CustomerDTO.CUIL) AllowSorting="false" HeaderText="CUIL" HeaderTextAlign="TextAlign.Center" Format="N0" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(CustomerDTO.Phone) AllowSorting="false" HeaderText="Teléfono" HeaderTextAlign="TextAlign.Center" Format="N0" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(CustomerDTO.Age) AllowSorting="false" HeaderText="Edad" HeaderTextAlign="TextAlign.Center" Format="N0" TextAlign="TextAlign.Center"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+
+@code
+{
+
+    [CascadingParameter]
+    public MainLayout mainLayoutObj { get; set; }
+
+    public Query GridQry = new Query();
+    private SfGrid<CustomerDTO> Grid { get; set; }
+    public CustomerDTO SelectedItem { get; set; } = new CustomerDTO();
+    List<CustomerDTO> sellerList = new List<CustomerDTO>();
+
+    public static CustomerService customerService;
+    
+    protected override async void OnInitialized()
+    {
+        try
+        {
+            GridQry = new Query();
+            customerService = CustomerService;
+        }
+        catch (Exception ex)
+        {
+            NavManager.NavigateTo($"/ErrorPage/{ex.Message.Replace("/", "-")}");
+            return;
+        }
+    }
+
+    public class CustomAdaptor : DataAdaptor
+    {
+        public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
+        {
+            try
+            {
+                var tGridData = await customerService.GetPagedCustomersAsync(dm);
+                return dm.RequiresCounts ? tGridData : (object)tGridData;
+            }
+            catch (Exception ex)
+            {
+                return new DataResult();
+            }
+            finally
+            {
+            }
+        }
+    }
+
+
+    private List<Object> Toolbaritems = new List<Object>()
+    {
+        new ToolbarItem() { Id = "Add", Text = "Añadir", PrefixIcon = "e-add" },
+        new ToolbarItem() { Id = "Edit", Text = "Editar/Ver", PrefixIcon = "e-edit" },
+        new ToolbarItem() { Id = "Delete", Text = "Eliminar", PrefixIcon = "e-delete" },
+        new ToolbarItem() { Id = "Actualizar", Text = "Actualizar", PrefixIcon = "e-reload-icon" },
+    };
+
+
+    public async void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        var caseSwitch = args.Item.Id;
+        switch (caseSwitch)
+        {
+            case "Add":
+                NavManager.NavigateTo($"/SaleNoteCRUD");
+                break;
+            case "Edit" when SelectedItem != null:
+                break;
+            case "Delete" when SelectedItem != null:
+                Grid.Refresh();
+                break;
+            case "Actualizar":
+                Grid.Refresh();
+                StateHasChanged();
+                break;
+            default:
+                await mainLayoutObj.ShowCardMessage(MessageTypes.Warning, "Para continuar seleccione un elemento de la lista");
+                StateHasChanged();
+                break;
+        }
+    }
+
+    public async Task GetSelectedRecords(RowSelectEventArgs<CustomerDTO> args)
+    {
+        var listSelectedItem = await this.Grid.GetSelectedRecords();
+        SelectedItem = listSelectedItem.FirstOrDefault();
+    }
+}
