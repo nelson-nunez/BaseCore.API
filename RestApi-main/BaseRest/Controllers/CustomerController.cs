@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace BaseRest.Core.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class CustomerController : Controller
