@@ -15,6 +15,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Syncfusion.Blazor.Buttons" Version="19.2.0.55" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="19.2.0.55" />
     <PackageReference Include="Syncfusion.Blazor.Grid" Version="19.2.0.55" />
     <PackageReference Include="Syncfusion.Blazor.Inputs" Version="19.2.0.55" />
     <PackageReference Include="Syncfusion.Blazor.Navigations" Version="19.2.0.55" />

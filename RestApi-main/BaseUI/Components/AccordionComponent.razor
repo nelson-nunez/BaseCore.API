@@ -1,0 +1,64 @@
+﻿@inherits LayoutComponentBase
+@using Syncfusion.Blazor.Navigations
+
+<SfAccordion ExpandMode="ExpandMode.Multiple">
+    <AccordionItems>
+        <AccordionItem Expanded="true">
+            <HeaderTemplate>
+                <b>@accordiontitle</b>
+            </HeaderTemplate>
+            <ContentTemplate>
+                <div class="card-body p-2">
+                    @ChildContent
+                </div>
+            </ContentTemplate>
+        </AccordionItem>
+    </AccordionItems>
+</SfAccordion>
+
+<style>
+    .e-accordion {
+        margin-bottom: 1rem;
+        text-decoration: none;
+    }
+
+        /* header custom css*/
+        .e-accordion .e-acrdn-item .e-acrdn-header {
+            background-color: #F5FBEF !important;
+        }
+
+        .e-accordion .e-acrdn-item.e-select.e-active > .e-acrdn-header .e-acrdn-header-content,
+        .e-accordion .e-acrdn-item.e-select.e-item-focus > .e-acrdn-header .e-acrdn-header-content {
+            color: steelblue !important;
+            text-decoration: none;
+        }
+
+        .e-accordion .e-acrdn-item .e-acrdn-header .e-toggle-icon .e-icons,
+        .e-accordion .e-acrdn-item .e-acrdn-header:hover,
+        .e-accordion .e-acrdn-item.e-select.e-expand-state > .e-acrdn-header .e-acrdn-header-content {
+            color: #7cb840 !important;
+            text-decoration: none;
+        }
+
+        .e-accordion .e-acrdn-item .e-acrdn-panel .e-acrdn-content {
+            padding: 0.7rem !important
+        }
+
+        .e-accordion .e-acrdn-item.e-selected.e-select {
+            border-bottom: 1px none #000;
+            border-top: 1px none #000;
+            border-bottom: 1px solid rgba(0,0,0,0.13);
+            border-radius: 15px !important;
+        }
+</style>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string datatarget { get; set; }
+    [Parameter]
+    public string accordiontitle { get; set; }
+
+}

@@ -40,6 +40,18 @@
         <a class="dismiss">🗙</a>
     </div>
 
+    <script>
+        $(document).on("keypress", ".allowonlynumbers", function (e) {
+            return (e.charCode != 8 && e.charCode == 0 || (e.charCode >= 48 && e.charCode <= 57));
+        });
+        $(document).on("paste", ".allowonlynumbers", function (e) {
+            e.preventDefault();
+            let paste = (e.originalEvent.clipboardData || window.clipboardData).getData('text');
+            this.value = paste.replace(/\D/g, '');
+            this.dispatchEvent(new Event('change'));
+        });
+    </script>
+
     @*Necesarios*@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

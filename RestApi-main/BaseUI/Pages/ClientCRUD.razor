@@ -1,0 +1,198 @@
+﻿@page "/ClientCRUD"
+@page "/ClientCRUD/{Id:int}/{ViewMode:int}"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+@using BaseRest.Core.Model.DTO
+@using BaseUI.Data
+@using BaseUI.Helpers
+@using BaseUI.Components
+@inject NavigationManager NavManager
+
+<EditForm Model="@newCustomer" OnValidSubmit="@SaveCustomer">
+    <SfTab>
+        <TabItems>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Datos de Clientes"></TabHeader>
+                </ChildContent>
+                <ContentTemplate>
+                    <FluentValidator TValidator="CustomerValidator" />
+                    <AccordionComponent datatarget="collapseTwo" accordiontitle="Datos de Cliente">
+                        <!--#region Datos revendedor-->
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <div class="form-group row text-sm-left text-md-right">
+                                    <label class="col-form-label col-sm-3 my-auto">Razón Social: </label>
+                                    <div class="col-sm-9 my-auto">
+                                        <SfTextBox ID="NametextBox"
+                                                   @bind-Value="@newCustomer.Name"
+                                                   Placeholder="Razón Social"
+                                                   Enabled="@enabled"
+                                                   TabIndex="10"
+                                                   CssClass="allowonlyletters" maxlength="30">
+                                        </SfTextBox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row text-sm-left text-md-right">
+                                    <label class="col-form-label col-sm-3 my-auto">Sexo: </label>
+                                    <div class="col-sm-9 my-auto">
+                                        <SfDropDownList CssClass="custom-select e-multi-column"
+                                                        TValue="int"
+                                                        TItem="GenderDTO"
+                                                        Placeholder="Seleccione una opción"
+                                                        @bind-Value="@newCustomer.GenderId"
+                                                        DataSource="@gendersList"
+                                                        TabIndex="11"
+                                                        Enabled="@enabled">
+                                            <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row text-sm-left text-md-right">
+                                    <label class="col-form-label col-sm-3 my-auto">Nro. CUIT: </label>
+                                    <div class="col-sm-9 my-auto">
+                                        <SfTextBox TValue="string"
+                                                   @bind-Value="@newCustomer.CUIL"
+                                                   Placeholder="Ingrese su CUIT"
+                                                   Format="0"
+                                                   Enabled="@enabled"
+                                                   TabIndex="12"
+                                                   maxlength="11"
+                                                   ShowSpinButton="false" CssClass="allowonlynumbers">
+                                        </SfTextBox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--#region Validadores de campos-->
+                        <div class="row align-items-center">
+                            <div class="col-md-4 my-auto text-right">
+                                <ValidationMessage For="() => newCustomer.Name"></ValidationMessage>
+                            </div>
+                            <div class="col-md-4 my-auto text-right">
+                                <ValidationMessage For="() => newCustomer.GenderId"></ValidationMessage>
+                            </div>
+                            <div class="col-md-4 my-auto text-right">
+                                <ValidationMessage For="() => newCustomer.CUIL"></ValidationMessage>
+                            </div>
+                        </div>
+
+                    </AccordionComponent>
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <ChildContent>
+                    <TabHeader Text="Archivos Adjuntos"></TabHeader>
+                </ChildContent>
+            </TabItem>
+        </TabItems>
+    </SfTab>
+    <div class="col-md-2 my-auto group-btn">
+        <div class="form-group">
+        </div>
+    </div>
+    <ValidationSummary />
+
+    <!--#region BUTTONS  -->
+    <div class="row align-items-center text-center">
+        <div class="col-auto mx-auto mt-3 mb-4" style="display:flex;column-gap:30px;">
+            <button type="button" class="btn btn-secondary mb-2 mx-auto" tabindex="25" @onclick="BackToMenu"><i class="fas fa-reply"></i> Volver</button>
+            <button type="submit" class="btn btn-primary mb-2 mx-auto" tabindex="25"><i class="fas fa-check"></i> Guardar</button>
+            <button type="button" class="btn btn-outline-secondary mb-2 mx-auto" @onclick="@CleanFields"> <i class="fas fa-eraser"></i> Limpiar </button>
+        </div>
+    </div>
+    <!--#endregion -->
+</EditForm>
+
+@code {
+    #region Nav vars
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public int ViewMode { get; set; }
+
+    private bool isHidden { get; set; } = false;
+
+    bool enabled = true;
+
+    #endregion
+
+    #region Vars
+
+    [CascadingParameter]
+    public MainLayout mainLayoutObj { get; set; }
+
+    CustomerDTO newCustomer = new CustomerDTO();
+
+    public bool IsVisible { get; set; } = false;
+
+    List<GenderDTO> gendersList = new List<GenderDTO>();
+
+    #endregion
+
+
+    #region Methods
+
+    protected override async void OnInitialized()
+    {
+        try
+        {
+            if (ViewMode == 0)
+                enabled = true;
+
+            gendersList.Add(new GenderDTO() { Id = 1, Name = "Masculino" });
+            gendersList.Add(new GenderDTO() { Id = 1, Name = "Femenino" });
+            gendersList.Add(new GenderDTO() { Id = 1, Name = "Otro" });
+        }
+
+        catch (Exception ex)
+        {
+            NavManager.NavigateTo($"/ErrorPage/{ex.Message.Replace("/", "-")}");
+            return;
+        }
+        finally
+        {
+            StateHasChanged();
+        }
+    }
+
+    public async Task SaveCustomer()
+    {
+        try
+        {
+
+            await mainLayoutObj.ShowCardMessage(MessageTypes.Information, "Guardando");
+
+        }
+        catch (Exception ex)
+        {
+            await mainLayoutObj.ShowCardMessage(MessageTypes.Warning, ex.Message);
+        }
+        finally
+        {
+            await mainLayoutObj.HideSpinner();
+        }
+    }
+
+    public async Task BackToMenu()
+    {
+        NavManager.NavigateTo("/ClientList");
+    }
+
+    public async Task CleanFields()
+    {
+        newCustomer = new CustomerDTO();
+        StateHasChanged();
+    }
+
+    #endregion
+
+}

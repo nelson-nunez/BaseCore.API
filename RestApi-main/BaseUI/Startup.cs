@@ -94,7 +94,6 @@ namespace BaseUI
             services.AddSingleton(typeof(ISyncfusionStringLocalizer), typeof(SyncfusionLocalizer));
 
             #endregion
-
          
             #region Servicios
 
