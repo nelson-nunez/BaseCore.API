@@ -24,46 +24,45 @@ namespace BaseUI.Services
             this.navigator = navigator;
         }
 
+        public async Task<CustomerDTO> GetCustomerbyIdAsync(int id)
+        {
+            var result = await baseApiClient.GetAsync<CustomerDTO>($"Customer/{id}");
+            var tt = result;
+            return result;
+        }
+
         public async Task<object> GetPagedCustomersAsync(DataManagerRequest dm)
         {
-            try
+            var data = new DataResult();
+            var request = new PagingSortFilterRequest();
+            request.OnlyEnabled = true;
+
+            if (dm.Search != null && dm.Search.Count > 0)
             {
-                var data = new DataResult();
-                var request = new PagingSortFilterRequest();
-                request.OnlyEnabled = true;
-
-                if (dm.Search != null && dm.Search.Count > 0)
-                {
-                    request.FilterValue = dm.Search.FirstOrDefault().Key.ToLower();
-                }
-                if (dm.Take != 0)
-                    request.PageIndex = dm.Skip / dm.Take;
-
-                request.PageSize = dm.Take;
-
-                if (dm.Sorted != null && dm.Sorted.Count > 0)
-                {
-                    var sortDirection = dm.Sorted[0].Direction == "ascending" ? "" : "-";
-                    request.OrderBy = sortDirection + dm.Sorted[0].Name;
-                }
-
-                var queryString = $"/Customer/PagedData?" +
-                    $"pageIndex={request.PageIndex}" +
-                    $"&pageSize={request.PageSize}" +
-                    $"&orderBy={request.OrderBy}" +
-                    $"&onlyEnabled={request.OnlyEnabled}";
-
-                await baseApiClient.ValidateAccessToken(contextAccessor, navigator);
-                var documentList = await baseApiClient.GetAsync<PagedDataResponse<CustomerDTO>>(queryString);           
-                data.Result = documentList.Results;
-                data.Count = documentList.RowCount;
-                return data;
+                request.FilterValue = dm.Search.FirstOrDefault().Key.ToLower();
             }
-            catch (Exception ex)
+            if (dm.Take != 0)
+                request.PageIndex = dm.Skip / dm.Take;
+
+            request.PageSize = dm.Take;
+
+            if (dm.Sorted != null && dm.Sorted.Count > 0)
             {
-
-                throw;
+                var sortDirection = dm.Sorted[0].Direction == "ascending" ? "" : "-";
+                request.OrderBy = sortDirection + dm.Sorted[0].Name;
             }
+
+            var queryString = $"/Customer/PagedData?" +
+                $"pageIndex={request.PageIndex}" +
+                $"&pageSize={request.PageSize}" +
+                $"&orderBy={request.OrderBy}" +
+                $"&onlyEnabled={request.OnlyEnabled}";
+
+            await baseApiClient.ValidateAccessToken(contextAccessor, navigator);
+            var documentList = await baseApiClient.GetAsync<PagedDataResponse<CustomerDTO>>(queryString);           
+            data.Result = documentList.Results;
+            data.Count = documentList.RowCount;
+            return data;
         }
     }
 }

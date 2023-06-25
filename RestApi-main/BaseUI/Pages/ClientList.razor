@@ -26,7 +26,7 @@
     <SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>
     <GridColumns>
         <GridEvents OnToolbarClick="ToolbarClickHandler" RowSelected="GetSelectedRecords" TValue="CustomerDTO"></GridEvents>
-        <GridColumn Field=@nameof(CustomerDTO.Id) AllowSorting="false" HeaderText="ID" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(CustomerDTO.Id) AllowSorting="false" HeaderText="ID" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="50" ></GridColumn>
         <GridColumn Field=@nameof(CustomerDTO.Name) AllowSorting="false" HeaderText="Nombre" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" MinWidth="150"></GridColumn>
         <GridColumn Field=@nameof(CustomerDTO.BirthDate) AllowSorting="false" HeaderText="Fech. Nac." HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" MinWidth="120"></GridColumn>
         <GridColumn Field=@nameof(CustomerDTO.CUIL) AllowSorting="false" HeaderText="CUIL" HeaderTextAlign="TextAlign.Center" Format="N0" TextAlign="TextAlign.Center"></GridColumn>
@@ -38,6 +38,7 @@
 
 @code
 {
+    #region Vars
 
     [CascadingParameter]
     public MainLayout mainLayoutObj { get; set; }
@@ -48,7 +49,22 @@
     List<CustomerDTO> sellerList = new List<CustomerDTO>();
 
     public static CustomerService customerService;
-    
+
+    private List<Object> Toolbaritems = new List<Object>()
+    {
+        new ToolbarItem() { Id = "Add", Text = "Añadir", PrefixIcon = "e-add" },
+        new ToolbarItem() { Id = "Edit", Text = "Editar", PrefixIcon = "e-edit" },
+        new ToolbarItem() { Id = "Ver", Text = "Ver", PrefixIcon = "e-eye" },
+        new ToolbarItem() { Id = "Delete", Text = "Eliminar", PrefixIcon = "e-delete" },
+        new ToolbarItem() { Id = "Actualizar", Text = "Actualizar", PrefixIcon = "e-reload" },
+    };
+
+    #endregion
+
+    #region Methods
+
+    #endregion
+
     protected override async void OnInitialized()
     {
         try
@@ -82,27 +98,22 @@
         }
     }
 
-
-    private List<Object> Toolbaritems = new List<Object>()
-    {
-        new ToolbarItem() { Id = "Add", Text = "Añadir", PrefixIcon = "e-add" },
-        new ToolbarItem() { Id = "Edit", Text = "Editar/Ver", PrefixIcon = "e-edit" },
-        new ToolbarItem() { Id = "Delete", Text = "Eliminar", PrefixIcon = "e-delete" },
-        new ToolbarItem() { Id = "Actualizar", Text = "Actualizar", PrefixIcon = "e-reload-icon" },
-    };
-
-
     public async void ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
         var caseSwitch = args.Item.Id;
         switch (caseSwitch)
         {
             case "Add":
-                NavManager.NavigateTo($"/ClientCRUD");
+                NavManager.NavigateTo($"/ClientCRUD/{ViewMode.Add}");
                 break;
             case "Edit" when SelectedItem != null:
+                NavManager.NavigateTo($"/ClientCRUD/{SelectedItem.Id}/{ViewMode.Update}");
+                break;
+            case "Ver" when SelectedItem != null:
+                NavManager.NavigateTo($"/ClientCRUD/{SelectedItem.Id}/{ViewMode.ReadOnly}");
                 break;
             case "Delete" when SelectedItem != null:
+                NavManager.NavigateTo($"/ClientCRUD/{SelectedItem.Id}/{ViewMode.Delete}");
                 Grid.Refresh();
                 break;
             case "Actualizar":

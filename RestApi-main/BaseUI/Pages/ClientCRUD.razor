@@ -1,14 +1,15 @@
 ﻿@page "/ClientCRUD"
-@page "/ClientCRUD/{Id:int}/{ViewMode:int}"
+@page "/ClientCRUD/{CRUDMode:int}"
+@page "/ClientCRUD/{Id:int}/{CRUDMode:int}"
 
-@using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Navigations
-@using Syncfusion.Blazor.Buttons
 @using BaseRest.Core.Model.DTO
 @using BaseUI.Data
 @using BaseUI.Helpers
 @using BaseUI.Components
+@using BaseUI.Services
 @inject NavigationManager NavManager
+@inject CustomerService CustomerService
 
 <EditForm Model="@newCustomer" OnValidSubmit="@SaveCustomer">
     <SfTab>
@@ -35,6 +36,12 @@
                                         </SfTextBox>
                                     </div>
                                 </div>
+                                <div class="form-group row text-sm-left text-md-right">
+                                    <div class="col-sm-3 my-auto"></div>
+                                    <div class="col-sm-9 my-auto">
+                                        <ValidationMessage For="() => newCustomer.Name"></ValidationMessage>
+                                    </div>                               
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group row text-sm-left text-md-right">
@@ -44,12 +51,18 @@
                                                         TValue="int"
                                                         TItem="GenderDTO"
                                                         Placeholder="Seleccione una opción"
-                                                        @bind-Value="@newCustomer.GenderId"
                                                         DataSource="@gendersList"
+                                                        @bind-Value="@newCustomer.GenderId"
                                                         TabIndex="11"
                                                         Enabled="@enabled">
                                             <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
                                         </SfDropDownList>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-left text-md-right">
+                                    <div class="col-sm-3 my-auto"></div>
+                                    <div class="col-sm-9 my-auto">
+                                        <ValidationMessage For="() => newCustomer.GenderId"></ValidationMessage>
                                     </div>
                                 </div>
                             </div>
@@ -68,21 +81,14 @@
                                         </SfTextBox>
                                     </div>
                                 </div>
+                                <div class="form-group row text-sm-left text-md-right">
+                                    <div class="col-sm-3 my-auto"></div>
+                                    <div class="col-sm-9 my-auto">
+                                        <ValidationMessage For="() => newCustomer.CUIL"></ValidationMessage>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!--#region Validadores de campos-->
-                        <div class="row align-items-center">
-                            <div class="col-md-4 my-auto text-right">
-                                <ValidationMessage For="() => newCustomer.Name"></ValidationMessage>
-                            </div>
-                            <div class="col-md-4 my-auto text-right">
-                                <ValidationMessage For="() => newCustomer.GenderId"></ValidationMessage>
-                            </div>
-                            <div class="col-md-4 my-auto text-right">
-                                <ValidationMessage For="() => newCustomer.CUIL"></ValidationMessage>
-                            </div>
-                        </div>
-
                     </AccordionComponent>
                 </ContentTemplate>
             </TabItem>
@@ -99,25 +105,23 @@
     </div>
     <ValidationSummary />
 
-    <!--#region BUTTONS  -->
-    <div class="row align-items-center text-center">
-        <div class="col-auto mx-auto mt-3 mb-4" style="display:flex;column-gap:30px;">
-            <button type="button" class="btn btn-secondary mb-2 mx-auto" tabindex="25" @onclick="BackToMenu"><i class="fas fa-reply"></i> Volver</button>
-            <button type="submit" class="btn btn-primary mb-2 mx-auto" tabindex="25"><i class="fas fa-check"></i> Guardar</button>
-            <button type="button" class="btn btn-outline-secondary mb-2 mx-auto" @onclick="@CleanFields"> <i class="fas fa-eraser"></i> Limpiar </button>
-        </div>
-    </div>
-    <!--#endregion -->
+    <ActionButtonsComponent 
+        CRUDMode="CRUDMode" 
+        Clear="CleanFields" 
+        Delete="DeleteCustomer" 
+        Back="BackToMenu" >
+    </ActionButtonsComponent>
 </EditForm>
 
 @code {
+
     #region Nav vars
 
     [Parameter]
     public int Id { get; set; }
 
     [Parameter]
-    public int ViewMode { get; set; }
+    public int CRUDMode { get; set; }
 
     private bool isHidden { get; set; } = false;
 
@@ -138,19 +142,39 @@
 
     #endregion
 
-
     #region Methods
 
     protected override async void OnInitialized()
     {
         try
         {
-            if (ViewMode == 0)
-                enabled = true;
-
             gendersList.Add(new GenderDTO() { Id = 1, Name = "Masculino" });
             gendersList.Add(new GenderDTO() { Id = 1, Name = "Femenino" });
             gendersList.Add(new GenderDTO() { Id = 1, Name = "Otro" });
+
+            switch (CRUDMode)
+            {
+                case ViewMode.Add:
+                    newCustomer = new CustomerDTO();
+                    enabled = true;
+                    break;
+                case ViewMode.Update:
+                    newCustomer = await CustomerService.GetCustomerbyIdAsync(Id);
+                    enabled = true;
+                    break;
+                case ViewMode.ReadOnly:
+                    newCustomer = await CustomerService.GetCustomerbyIdAsync(Id);
+                    enabled = false;
+                    break;
+                case ViewMode.Delete:
+                    newCustomer = await CustomerService.GetCustomerbyIdAsync(Id);
+                    enabled = false;
+                    break;
+                default:
+                    newCustomer = new CustomerDTO();
+                    enabled = false;
+                    break;
+            }
         }
 
         catch (Exception ex)
@@ -168,9 +192,23 @@
     {
         try
         {
-
             await mainLayoutObj.ShowCardMessage(MessageTypes.Information, "Guardando");
+        }
+        catch (Exception ex)
+        {
+            await mainLayoutObj.ShowCardMessage(MessageTypes.Warning, ex.Message);
+        }
+        finally
+        {
+            await mainLayoutObj.HideSpinner();
+        }
+    }
 
+    public async Task DeleteCustomer()
+    {
+        try
+        {
+            await mainLayoutObj.ShowCardMessage(MessageTypes.Information, "Borrando");
         }
         catch (Exception ex)
         {

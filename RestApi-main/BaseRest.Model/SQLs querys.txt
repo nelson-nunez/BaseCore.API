@@ -1,0 +1,64 @@
+﻿INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Juana Maria Perez', '1990-01-01', '12345678910', 1, '364412345678', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Carlos Canto', '1994-01-01', '12345678910', 2, '364412345678', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Manuel Sosa', '1980-01-01', '12345678910', 3, '364412345678', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Laura Torres', '1992-06-12', '56789012345', 2, '364412345682', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Javier Fernandez', '1988-04-25', '56789012345', 1, '364412345683', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Marina Lopez', '1975-11-08', '56789012345', 3, '364412345684', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Laura Torres', '1992-06-12', '56789012345', 2, '364412345682', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Javier Fernandez', '1988-04-25', '56789012345', 1, '364412345683', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Marina Lopez', '1975-11-08', '56789012345', 3, '364412345684', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Raul Gomez', '1997-09-17', '56789012345', 1, '364412345685', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Elena Rodriguez', '1983-07-20', '56789012345', 3, '364412345686', '2023-06-24');
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('John Smith', '1990-01-01', '12345678910', 1, '364412345678', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Michael Johnson', '1994-01-01', '12345678910', 2, '364412345678', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Robert Davis', '1980-01-01', '12345678910', 3, '364412345678', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Jennifer Taylor', '1992-06-12', '56789012345', 2, '364412345682', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Emily Anderson', '1988-04-25', '56789012345', 1, '364412345683', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Sophia Martinez', '1975-11-08', '56789012345', 3, '364412345684', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Laura Torres', '1992-06-12', '56789012345', 2, '364412345682', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('David Johnson', '1988-04-25', '56789012345', 1, '364412345683', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Olivia Davis', '1975-11-08', '56789012345', 3, '364412345684', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('William Gomez', '1997-09-17', '56789012345', 1, '364412345685', '2023-06-24');
+
+INSERT INTO Customer (Name, BirthDate, CUIL, GenderId, Phone, Created)
+VALUES ('Emma Rodriguez', '1983-07-20', '56789012345', 3, '364412345686', '2023-06-24');

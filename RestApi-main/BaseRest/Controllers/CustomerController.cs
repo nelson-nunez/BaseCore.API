@@ -37,6 +37,14 @@ namespace BaseRest.Core.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CustomerDTO>> GetCustomerbyId(int id)
+        {
+            var item = await customerBusiness.FindAsync(id);
+            var dto = mapper.Map<CustomerDTO>(item);
+            return Ok(dto);
+        }
+
         [HttpGet("PagedData")]
         public async Task<ActionResult<PagedDataResponse<CustomerDTO>>> GetAllResellers([FromQuery] PagingSortFilterRequest request)
         {

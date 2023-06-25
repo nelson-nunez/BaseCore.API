@@ -5,7 +5,13 @@
 
 
 <CascadingValue Value="@this">
-    <Syncfusion.Blazor.Spinner.SfSpinner @ref="@SpinnerObj" Type="Syncfusion.Blazor.Spinner.SpinnerType.HighContrast" Label="Cargando..." Size="40" CssClass="e-spin-overlay" ZIndex="9999"></Syncfusion.Blazor.Spinner.SfSpinner>
+    <Syncfusion.Blazor.Spinner.SfSpinner 
+        @ref="@SpinnerObj" 
+        Type="Syncfusion.Blazor.Spinner.SpinnerType.HighContrast" 
+        Size="50" 
+        CssClass="e-spin-overlay" 
+        ZIndex="9999">
+    </Syncfusion.Blazor.Spinner.SfSpinner>
     <div class="page">
         <AuthorizeView>
             <Authorized>
@@ -26,52 +32,13 @@
                     </div>
                 </Authorized>
             </AuthorizeView>
-            <div class="content px-4">
+            <div class="content" style="padding:1.5rem">
                 @Body
                 <MessageCardComponent @ref="messageCardComponent"></MessageCardComponent>
             </div>
         </div>
     </div>
 </CascadingValue>
-
-<style>
-    .custom-container {
-        height: 100vh !important;
-    }
-
-    /*Centra en el medio vertical de la pantalla*/
-    .custom-full-center {
-        margin: 0;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .custom-headers {
-        color: #006674;
-        text-align: left;
-        margin: 0 0 0.3rem 0;
-    }
-
-    .principal-button {
-        background-color: #7dc243 !important;
-        border-radius: 3px !important;
-        margin: 1rem;
-        padding: 0.5rem 2rem 0.5rem 2rem !important;
-    }
-
-    /*Card*/
-    .card, .card-body, .custom-headers, .card-footer {
-        padding: 0.25rem !important;
-        /*border: hidden;*/
-        border-color: transparent;
-    }
-
-    .form-group {
-        width: 100% !important;
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-</style>
 
 @code{
     [CascadingParameter]
