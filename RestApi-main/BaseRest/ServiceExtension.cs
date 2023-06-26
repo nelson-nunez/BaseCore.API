@@ -37,6 +37,7 @@ namespace BaseRest.Core.API
         public static void AddBusinessServices(this IServiceCollection services)
         {
             services.AddScoped<CustomerBusiness, CustomerBusiness>();
+
             services.AddScoped<GenderBusiness, GenderBusiness>();
 
             services.AddScoped<AuthenticationBusiness, AuthenticationBusiness>();

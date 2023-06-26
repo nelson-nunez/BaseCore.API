@@ -5,12 +5,16 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using BaseRest.Core.Model.Base;
+using System.Threading;
 
 namespace BaseRest.Core.Business
 {
     public class CustomerBusiness
     {
         public readonly UnitOfWork unitOfWork;
+        private static readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
+
+
         public CustomerBusiness(UnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
@@ -18,15 +22,9 @@ namespace BaseRest.Core.Business
 
         public async Task<Customer> FindAsync(int id)
         {
-            return await unitOfWork.CustomerRepository.FirstOrDefaultAsync(x => x.Id == id);
+            return await unitOfWork.CustomerRepository.FindAsync(id);
         }
 
-        public async Task<Customer> FindByUserNameAsync(string name)
-        {
-            Customer result = null;
-            result = await unitOfWork.CustomerRepository.FirstOrDefaultAsync(x => x.Name == name);
-            return result;
-        }
 
         public async Task<IEnumerable<Customer>> GetAsync()
         {
@@ -59,6 +57,10 @@ namespace BaseRest.Core.Business
         {
             try
             {
+                //Prueba con semáforo
+                await _semaphoreSlim.WaitAsync();
+
+
                 if (entity.Id == 0)
                 {
                     await unitOfWork.CustomerRepository.AddAsync(entity);
@@ -70,10 +72,14 @@ namespace BaseRest.Core.Business
                 await unitOfWork.CompleteAsync();
                 return entity.Id;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
             }
         }
 

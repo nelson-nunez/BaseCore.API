@@ -30,7 +30,6 @@ namespace BaseUI
         {
             #region HttpClient
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpContextAccessor(); //Permite obtener el contexto del usuario o la sesion actual
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>

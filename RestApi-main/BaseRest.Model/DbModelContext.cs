@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Proxies;
 using BaseRest.Core.Model.Model;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace BaseRest.Core.Model
 {
@@ -18,16 +20,20 @@ namespace BaseRest.Core.Model
                               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                               .AddJsonFile("appsettings.json")
                               .Build();
-                var tt = configuration.GetConnectionString("DefaultConnection");
-                if (string.IsNullOrEmpty(tt))
-                    throw new Exception("No hay string de conexión..."); 
-                
-                optionsBuilder.UseSqlServer(tt)
-                              .UseLazyLoadingProxies();
+                var str = configuration.GetConnectionString("DefaultConnection");
+                if (string.IsNullOrEmpty(str))
+                    throw new Exception("No hay string de conexión...");
+
+                optionsBuilder
+                    .UseSqlServer(str)
+                    .EnableSensitiveDataLogging()
+                    .ConfigureWarnings(c => c.Log((RelationalEventId.CommandExecuting, LogLevel.Debug)));
+
+                optionsBuilder.UseLazyLoadingProxies();
             }
         }
 
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -40,6 +46,8 @@ namespace BaseRest.Core.Model
             foreach (var fk in cascadeFKs)
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
 
+            AddMyFilters(ref modelBuilder);
+
             modelBuilder.Seed();
         }
 
@@ -49,7 +57,21 @@ namespace BaseRest.Core.Model
         public DbSet<AppUser> AppUser { get; set; }
 
         #endregion
+
+        private void AddMyFilters(ref ModelBuilder modelBuilder)
+        {
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                //other automated configurations left out   
+                if (entityType.ClrType != null && typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType) && entityType.BaseType == null)
+                {
+                    entityType.AddSoftDeleteQueryFilter();
+                }
+            }
+        } 
     }
+
+
 
     public static class ModelBuilderExtensions
     {

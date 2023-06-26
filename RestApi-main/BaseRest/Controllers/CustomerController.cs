@@ -94,6 +94,7 @@ namespace BaseRest.Core.Controllers
                 throw new Exception("No se encontró el registro");
 
             entityFromDb = mapper.Map<Customer>(dto);
+
             var result = await customerBusiness.CustomerSaveAsync(entityFromDb);
             var response = new ActionResultDTO()
             {

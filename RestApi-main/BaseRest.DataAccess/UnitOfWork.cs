@@ -74,21 +74,23 @@ namespace BaseRest.Core.DataAccess
             var changedObjects = context.ChangeTracker.Entries<IEntity>();
             foreach (var entry in changedObjects)
             {
-                if (entry.State == EntityState.Added)
+                switch (entry.State)
                 {
-                    entry.Entity.Created = DateTime.Now;
-                    entry.Entity.CreatedBy = httpContextAccessor.HttpContext.User.Identity.IsAuthenticated ? httpContextAccessor.HttpContext.User.Identity.Name : string.Empty;
-                }
-                if (entry.State == EntityState.Modified)
-                {
-                    entry.Entity.Updated = DateTime.Now;
-                    entry.Entity.UpdatedBy = httpContextAccessor.HttpContext.User.Identity.IsAuthenticated ? httpContextAccessor.HttpContext.User.Identity.Name : string.Empty;
-                }
-                if (entry.State == EntityState.Deleted && entry.Entity is ISoftDelete)
-                {
-                    entry.State = EntityState.Modified;
-                    entry.Entity.Deleted = DateTime.Now;
-                    entry.Entity.DeletedBy = httpContextAccessor.HttpContext.User.Identity.IsAuthenticated ? httpContextAccessor.HttpContext.User.Identity.Name : string.Empty;
+                    case EntityState.Added:
+                        entry.Entity.Created = DateTime.Now;
+                        entry.Entity.CreatedBy = httpContextAccessor.HttpContext.User.Identity.IsAuthenticated ? httpContextAccessor.HttpContext.User.Identity.Name : string.Empty;
+                        break;
+
+                    case EntityState.Modified:
+                        entry.Entity.Updated = DateTime.Now;
+                        entry.Entity.UpdatedBy = httpContextAccessor.HttpContext.User.Identity.IsAuthenticated ? httpContextAccessor.HttpContext.User.Identity.Name : string.Empty;
+                        break;
+
+                    case EntityState.Deleted when entry.Entity is ISoftDelete:
+                        entry.State = EntityState.Modified;
+                        entry.Entity.Deleted = DateTime.Now;
+                        entry.Entity.DeletedBy = httpContextAccessor.HttpContext.User.Identity.IsAuthenticated ? httpContextAccessor.HttpContext.User.Identity.Name : string.Empty;
+                        break;
                 }
             }
             await context.SaveChangesAsync();
