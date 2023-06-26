@@ -1,4 +1,5 @@
 ﻿<div class="top-row pl-4 navbar navbar-dark">
+    <i class="fa-solid fa-kiwi-bird" style="color: #ffffff;"></i>
     <a class="navbar-brand" href="">BaseUI</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -7,23 +8,29 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
-        <li class="nav-item px-3">
+        <li class="nav-item px-3 my-auto">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <i class="fa-solid fa-house"></i> Inicio
             </NavLink>
         </li>
-        <li class="nav-item px-3">
+        <li class="nav-item px-3 my-auto">
+            <NavLink class="nav-link" href="ClientCRUD/2">
+                <i class="fa-solid fa-user-plus"></i>  Alta de Clientes
+            </NavLink>
+        </li>
+        <li class="nav-item px-3 my-auto">
             <NavLink class="nav-link" href="ClientList">
-                <span class="oi oi-plus" aria-hidden="true"></span> Listado de Clientes
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Test">
-                <span class="oi oi-plus" aria-hidden="true"></span> Test
+                <i class="fa-solid fa-list"></i> Lista de Clientes
             </NavLink>
         </li>
     </ul>
 </div>
+
+<style>
+    .fa-solid{
+        margin-right: 0.5rem !important;
+    }
+</style>
 
 @code {
     private bool collapseNavMenu = true;

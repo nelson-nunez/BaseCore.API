@@ -10,7 +10,10 @@ namespace BaseUI
             services.AddScoped<Syncfusion.Blazor.Spinner.SfSpinner>();
 
             services.AddScoped<AuthenticationService>();
+          
             services.AddScoped<CustomerService>();
+          
+            services.AddScoped<GenderService>();
 
         }
     }

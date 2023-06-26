@@ -57,16 +57,24 @@ namespace BaseRest.Core.Business
 
         public async Task<int> CustomerSaveAsync(Customer entity)
         {
-            if (entity.Id == 0)
+            try
             {
-                await unitOfWork.CustomerRepository.AddAsync(entity);
+                if (entity.Id == 0)
+                {
+                    await unitOfWork.CustomerRepository.AddAsync(entity);
+                }
+                else
+                {
+                    unitOfWork.CustomerRepository.Update(entity);
+                }
+                await unitOfWork.CompleteAsync();
+                return entity.Id;
             }
-            else
+            catch (Exception ex)
             {
-                unitOfWork.CustomerRepository.Update(entity);
+
+                throw;
             }
-            await unitOfWork.CompleteAsync();
-            return entity.Id;
         }
 
         public async Task<bool> DeleteAsync(int id)

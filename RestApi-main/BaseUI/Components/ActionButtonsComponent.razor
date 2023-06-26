@@ -4,10 +4,36 @@
 @*   Buttons Component   *@
 <div class="row align-items-center text-center">
     <div class="col-auto mx-auto mt-3 mb-4" style="display:flex;column-gap:30px;">
-        <button type="button" class="btn btn-secondary mb-2 mx-auto" tabindex="25" @onclick="OnBackChanged"><i class="fas fa-reply"></i> Volver</button>
-        <button type="submit" hidden="@savehidden" class="btn btn-primary mb-2 mx-auto" tabindex="25"><i class="fas fa-check"></i> Guardar</button>
-        <button type="button" hidden="@clearhidden" class="btn btn-outline-secondary mb-2 mx-auto" @onclick="@OnClearChanged"> <i class="fas fa-eraser"></i> Limpiar </button>
-        <button type="button" hidden="@deletehidden" class="btn btn-outline-secondary mb-2 mx-auto" @onclick="@OnDeleteChanged"> <i class="fas fa-eraser"></i> Borrar </button>
+
+        <button type="button" 
+                class="btn btn-secondary mb-2 mx-auto" 
+                tabindex="100" @onclick="OnBackChanged">
+                <i class="fas fa-reply"></i> Volver
+        </button>
+
+        <button type="submit" 
+                hidden="@savehidden" 
+                class="btn btn-primary mb-2 mx-auto" 
+                tabindex="101">
+                <i class="fas fa-check"></i> Guardar
+        </button>
+
+        <button type="button" 
+                hidden="@clearhidden" 
+                class="btn btn-outline-secondary mb-2 mx-auto" 
+                @onclick="@OnClearChanged"
+                tabindex="102"> 
+                <i class="fas fa-eraser"></i> Limpiar 
+        </button>
+
+        <button type="button" 
+                hidden="@deletehidden" 
+                class="btn btn-outline-danger mb-2 mx-auto" 
+                @onclick="@OnDeleteChanged"
+                tabindex="103"> 
+                <i class="fas fa-eraser"></i> Borrar 
+        </button>
+
     </div>
 </div>
 

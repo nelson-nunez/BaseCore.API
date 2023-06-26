@@ -56,9 +56,6 @@ INICIANDO PROYECTO
 
 
 
-consultar si el delete del generic repository esta haciendo un delete hard o soft!!!!!!!!!!!!!!!!!!!
-porqur usamos el action result??? porq no directo la clase resultante nomas???
-
 PAQUETES REQUERIDOS
 Microsoft.VisualStudio.Azure.Containers.Tools.Targets (PREINSTALADO)
 Microsoft.VisualStudio.Web.CodeGeneration.Design (PREINSTALADO)

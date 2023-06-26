@@ -21,6 +21,17 @@ namespace BaseRest.Core.DataAccess
         #endregion
 
         #region Repositorios
+
+        private GenderRepository genderRepository;
+        public GenderRepository GenderRepository
+        {
+            get
+            {
+                this.genderRepository ??= new GenderRepository(context);
+                return genderRepository;
+            }
+        }
+        
         private CustomerRepository customerRepository;
         public CustomerRepository CustomerRepository
         {

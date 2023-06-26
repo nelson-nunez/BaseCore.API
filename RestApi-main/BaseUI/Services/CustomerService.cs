@@ -26,8 +26,8 @@ namespace BaseUI.Services
 
         public async Task<CustomerDTO> GetCustomerbyIdAsync(int id)
         {
+            await baseApiClient.ValidateAccessToken(contextAccessor, navigator);
             var result = await baseApiClient.GetAsync<CustomerDTO>($"Customer/{id}");
-            var tt = result;
             return result;
         }
 
@@ -63,6 +63,20 @@ namespace BaseUI.Services
             data.Result = documentList.Results;
             data.Count = documentList.RowCount;
             return data;
+        }
+
+        public async Task<ActionResultDTO> SaveCustomerAsync(CustomerDTO dto)
+        {
+            await baseApiClient.ValidateAccessToken(contextAccessor, navigator);
+            var result = await baseApiClient.PostAsync<ActionResultDTO>("Customer", dto);
+            return result;
+        }
+
+        public async Task<ActionResultDTO> DeleteCustomerAsync(int id)
+        {
+            await baseApiClient.ValidateAccessToken(contextAccessor, navigator);
+            var result = await baseApiClient.DeleteAsync<ActionResultDTO>($"Customer/{id}");
+            return result;
         }
     }
 }

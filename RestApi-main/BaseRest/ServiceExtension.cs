@@ -29,12 +29,15 @@ namespace BaseRest.Core.API
 
             services.AddScoped<CustomerRepository, CustomerRepository>();
 
+            services.AddScoped<GenderRepository, GenderRepository>();
+
             services.AddScoped<AppUserRepository, AppUserRepository>();
         }
 
         public static void AddBusinessServices(this IServiceCollection services)
         {
             services.AddScoped<CustomerBusiness, CustomerBusiness>();
+            services.AddScoped<GenderBusiness, GenderBusiness>();
 
             services.AddScoped<AuthenticationBusiness, AuthenticationBusiness>();
         }

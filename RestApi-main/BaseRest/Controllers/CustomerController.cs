@@ -80,11 +80,9 @@ namespace BaseRest.Core.Controllers
         {
             var entity = mapper.Map<Customer>(dto);
             var result = await customerBusiness.CustomerSaveAsync(entity);
-            var response = new ActionResultDTO()
-            {
-                Code = result.ToString(),
-                Message = "El cliente se registró correctamente"
-            };
+            var response = new ActionResultDTO();
+            response.Message = dto.Id > 0 ? "El cliente se actualizó correctamente" : "El cliente se registró correctamente";
+            response.Code = result.ToString();
             return Ok(response);
         }
 
@@ -95,7 +93,7 @@ namespace BaseRest.Core.Controllers
             if (entityFromDb == null)
                 throw new Exception("No se encontró el registro");
 
-            entityFromDb.Map(dto);
+            entityFromDb = mapper.Map<Customer>(dto);
             var result = await customerBusiness.CustomerSaveAsync(entityFromDb);
             var response = new ActionResultDTO()
             {
@@ -115,18 +113,6 @@ namespace BaseRest.Core.Controllers
                 Message = "El cliente se eliminó correctamente"
             };
             return Ok(response);
-        }
-    }
-
-    public static class CustomerExtensions
-    {
-        public static void Map(this Customer entity, CustomerDTO dto)
-        {
-            entity.Name = dto.Name;
-            entity.BirthDate = dto.BirthDate;
-            entity.CUIL = dto.CUIL;
-            entity.GenderId = dto.GenderId > 0 ? dto.GenderId : entity.GenderId;
-            entity.Phone = dto.Phone;
         }
     }
 }

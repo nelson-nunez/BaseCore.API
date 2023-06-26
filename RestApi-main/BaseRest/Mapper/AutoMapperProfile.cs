@@ -13,7 +13,8 @@ namespace BaseRest.Core.Mapper
         public AutoMapperProfile()
         {
             CreateMap<Customer, CustomerDTO>().ReverseMap();
-            CreateMap<Customer, CustomerDTO>().ReverseMap();
+
+            CreateMap<Gender, GenderDTO>().ReverseMap();
         }
     }
 }

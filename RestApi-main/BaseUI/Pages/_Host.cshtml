@@ -16,14 +16,18 @@
     <link href="css/site.css" rel="stylesheet" />
     <link href="BaseUI.styles.css" rel="stylesheet" />
 
-    @*Fontawesome*@
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
-    @*Syncfusion*@
-    <link href="https://cdn.syncfusion.com/blazor/19.2.55/styles/bootstrap4.css" rel="stylesheet" />
-    @*JS SCRIPTS -------------------------*@
-    <script src="~/scripts/script.js"></script>
     @*CSS custom*@
     <link rel="stylesheet" href="~/css/CustomStyles.css" />
+    @*Fontawesome*@
+    <link rel="stylesheet" href="~/css/FontAwesome/all.css" />  
+    <link rel="stylesheet" href="~/css/webfonts/fa-brands-400.ttf" />
+    <link rel="stylesheet" href="~/css/webfonts/fa-regular-400.ttf" />
+    <link rel="stylesheet" href="~/css/webfonts/fa-solid-900.ttf" />
+    <link rel="stylesheet" href="~/css/webfonts/fa-v4compatibility.ttf" />
+    @*Syncfusion*@
+    <link rel="stylesheet" href="~/css/CdnSyncfusion.com19-2-55.css"/>
+    @*JS SCRIPTS -------------------------*@
+    <script src="~/scripts/script.js"></script>
 
 </head>
 <body>
@@ -40,18 +44,6 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <script>
-        $(document).on("keypress", ".allowonlynumbers", function (e) {
-            return (e.charCode != 8 && e.charCode == 0 || (e.charCode >= 48 && e.charCode <= 57));
-        });
-        $(document).on("paste", ".allowonlynumbers", function (e) {
-            e.preventDefault();
-            let paste = (e.originalEvent.clipboardData || window.clipboardData).getData('text');
-            this.value = paste.replace(/\D/g, '');
-            this.dispatchEvent(new Event('change'));
-        });
-    </script>
-
     @*Necesarios*@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -63,6 +55,51 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
     @*Blazor js*@
     <script src="_framework/blazor.server.js"></script>
+    @*Tiene que ir despues de la carga de los elementos de blazor*@
+    <script>
+        $(document).on("keypress", ".allowonlydates", function (e) {
+            return (e.charCode != 8 && e.charCode == 0 || (e.charCode >= 48 && e.charCode <= 57) || e.charCode == 47);
+        });
+        $(document).on("paste", ".allowonlydates", function (e) {
+            e.preventDefault();
+            let paste = (e.originalEvent.clipboardData || window.clipboardData).getData('text');
+            this.value = paste.replace(/\D/g, '');
+            this.dispatchEvent(new Event('change'));
+        });
+
+
+        $(document).on("keypress", ".allowonlynumbers", function (e) {
+            return (e.charCode != 8 && e.charCode == 0 || (e.charCode >= 48 && e.charCode <= 57));
+        });
+        $(document).on("paste", ".allowonlynumbers", function (e) {
+            e.preventDefault();
+            let paste = (e.originalEvent.clipboardData || window.clipboardData).getData('text');
+            this.value = paste.replace(/\D/g, '');
+            this.dispatchEvent(new Event('change'));
+        });
+
+        $(document).on("keypress", ".allowonlyletters", function (e) {
+            var charCode = event.keyCode;
+            if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8 || charCode == 32 || charCode == 241 || charCode == 209)
+                return true;
+            else
+                return false;
+        });
+
+        document.addEventListener('keypress', function (e) {
+            if (e.keyCode === 13 || e.which === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        $(document).on("paste", ".allowonlyletters", function (e) {
+            e.preventDefault();
+            let paste = (e.originalEvent.clipboardData || window.clipboardData).getData('text');
+            this.value = paste.replace(/[^\d]/g, '');
+            this.dispatchEvent(new Event('change'));
+        });
+    </script>
 
 </body>
 </html>

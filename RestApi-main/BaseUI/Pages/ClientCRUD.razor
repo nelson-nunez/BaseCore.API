@@ -10,6 +10,7 @@
 @using BaseUI.Services
 @inject NavigationManager NavManager
 @inject CustomerService CustomerService
+@inject GenderService GenderService
 
 <EditForm Model="@newCustomer" OnValidSubmit="@SaveCustomer">
     <SfTab>
@@ -31,7 +32,7 @@
                                                    @bind-Value="@newCustomer.Name"
                                                    Placeholder="Razón Social"
                                                    Enabled="@enabled"
-                                                   TabIndex="10"
+                                                   TabIndex="1"
                                                    CssClass="allowonlyletters" maxlength="30">
                                         </SfTextBox>
                                     </div>
@@ -45,6 +46,49 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group row text-sm-left text-md-right">
+                                    <label class="col-form-label col-sm-3 my-auto">Nro. CUIT: </label>
+                                    <div class="col-sm-9 my-auto">
+                                        <SfTextBox TValue="string"
+                                                   @bind-Value="@newCustomer.CUIL"
+                                                   Placeholder="Ingrese su CUIT"
+                                                   Format="0"
+                                                   Enabled="@enabled"
+                                                   TabIndex="2"
+                                                   maxlength="11"
+                                                   ShowSpinButton="false" CssClass="allowonlynumbers">
+                                        </SfTextBox>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-left text-md-right">
+                                    <div class="col-sm-3 my-auto"></div>
+                                    <div class="col-sm-9 my-auto">
+                                        <ValidationMessage For="() => newCustomer.CUIL"></ValidationMessage>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group row text-sm-left text-md-right">
+                                    <label class="col-form-label col-sm-3 my-auto">Fecha nac.: </label>
+                                    <div class="col-sm-9 my-auto">
+                                        <SfDatePicker @bind-Value="@newCustomer.BirthDate" 
+                                                      CssClass="allowonlydates" 
+                                                      ShowClearButton="true" 
+                                                      Enabled="@enabled"
+                                                      TabIndex="3">
+                                        </SfDatePicker>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-left text-md-right">
+                                    <div class="col-sm-3 my-auto"></div>
+                                    <div class="col-sm-9 my-auto">
+                                        <ValidationMessage For="() => newCustomer.BirthDate"></ValidationMessage>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <div class="form-group row text-sm-left text-md-right">
                                     <label class="col-form-label col-sm-3 my-auto">Sexo: </label>
                                     <div class="col-sm-9 my-auto">
                                         <SfDropDownList CssClass="custom-select e-multi-column"
@@ -53,7 +97,7 @@
                                                         Placeholder="Seleccione una opción"
                                                         DataSource="@gendersList"
                                                         @bind-Value="@newCustomer.GenderId"
-                                                        TabIndex="11"
+                                                        TabIndex="4"
                                                         Enabled="@enabled">
                                             <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
                                         </SfDropDownList>
@@ -68,15 +112,15 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group row text-sm-left text-md-right">
-                                    <label class="col-form-label col-sm-3 my-auto">Nro. CUIT: </label>
+                                    <label class="col-form-label col-sm-3 my-auto">Nro. Teléfono: </label>
                                     <div class="col-sm-9 my-auto">
                                         <SfTextBox TValue="string"
-                                                   @bind-Value="@newCustomer.CUIL"
-                                                   Placeholder="Ingrese su CUIT"
+                                                   @bind-Value="@newCustomer.Phone"
+                                                   Placeholder="Ingrese su Teléfono"
                                                    Format="0"
                                                    Enabled="@enabled"
-                                                   TabIndex="12"
-                                                   maxlength="11"
+                                                   TabIndex="5"
+                                                   maxlength="14"
                                                    ShowSpinButton="false" CssClass="allowonlynumbers">
                                         </SfTextBox>
                                     </div>
@@ -84,10 +128,10 @@
                                 <div class="form-group row text-sm-left text-md-right">
                                     <div class="col-sm-3 my-auto"></div>
                                     <div class="col-sm-9 my-auto">
-                                        <ValidationMessage For="() => newCustomer.CUIL"></ValidationMessage>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-4"> </div>
                         </div>
                     </AccordionComponent>
                 </ContentTemplate>
@@ -148,35 +192,35 @@
     {
         try
         {
-            gendersList.Add(new GenderDTO() { Id = 1, Name = "Masculino" });
-            gendersList.Add(new GenderDTO() { Id = 1, Name = "Femenino" });
-            gendersList.Add(new GenderDTO() { Id = 1, Name = "Otro" });
-
+            gendersList = await GenderService.GetGendersAsync();
             switch (CRUDMode)
             {
                 case ViewMode.Add:
                     newCustomer = new CustomerDTO();
                     enabled = true;
                     break;
+
                 case ViewMode.Update:
                     newCustomer = await CustomerService.GetCustomerbyIdAsync(Id);
                     enabled = true;
                     break;
+
                 case ViewMode.ReadOnly:
                     newCustomer = await CustomerService.GetCustomerbyIdAsync(Id);
                     enabled = false;
                     break;
+
                 case ViewMode.Delete:
                     newCustomer = await CustomerService.GetCustomerbyIdAsync(Id);
                     enabled = false;
                     break;
+
                 default:
                     newCustomer = new CustomerDTO();
-                    enabled = false;
+                    enabled = true;
                     break;
             }
         }
-
         catch (Exception ex)
         {
             NavManager.NavigateTo($"/ErrorPage/{ex.Message.Replace("/", "-")}");
@@ -192,7 +236,8 @@
     {
         try
         {
-            await mainLayoutObj.ShowCardMessage(MessageTypes.Information, "Guardando");
+            var response = await CustomerService.SaveCustomerAsync(newCustomer);
+            await mainLayoutObj.ShowCardMessage(MessageTypes.Information, response.Message);
         }
         catch (Exception ex)
         {
@@ -208,7 +253,8 @@
     {
         try
         {
-            await mainLayoutObj.ShowCardMessage(MessageTypes.Information, "Borrando");
+            var response = await CustomerService.DeleteCustomerAsync(newCustomer.Id);
+            await mainLayoutObj.ShowCardMessage(MessageTypes.Information, response.Message);
         }
         catch (Exception ex)
         {
