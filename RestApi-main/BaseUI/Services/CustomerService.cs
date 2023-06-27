@@ -71,6 +71,13 @@ namespace BaseUI.Services
             var result = await baseApiClient.PostAsync<ActionResultDTO>("Customer", dto);
             return result;
         }
+        
+        public async Task<ActionResultDTO> UpdateCustomerAsync(CustomerDTO dto)
+        {
+            await baseApiClient.ValidateAccessToken(contextAccessor, navigator);
+            var result = await baseApiClient.PutAsync<ActionResultDTO>("Customer", dto);
+            return result;
+        }
 
         public async Task<ActionResultDTO> DeleteCustomerAsync(int id)
         {

@@ -236,8 +236,14 @@
     {
         try
         {
-            var response = await CustomerService.SaveCustomerAsync(newCustomer);
-            await mainLayoutObj.ShowCardMessage(MessageTypes.Information, response.Message);
+            var response = new ActionResultDTO();
+            if (CRUDMode == ViewMode.Add)
+                response = await CustomerService.SaveCustomerAsync(newCustomer);
+            if (CRUDMode == ViewMode.Update)
+                response = await CustomerService.UpdateCustomerAsync(newCustomer);
+
+
+            await mainLayoutObj.ShowCardMessage(MessageTypes.InformationAction, response.Message, "", "/ClientList");
         }
         catch (Exception ex)
         {
@@ -245,6 +251,7 @@
         }
         finally
         {
+            CleanFields();
             await mainLayoutObj.HideSpinner();
         }
     }
@@ -254,7 +261,7 @@
         try
         {
             var response = await CustomerService.DeleteCustomerAsync(newCustomer.Id);
-            await mainLayoutObj.ShowCardMessage(MessageTypes.Information, response.Message);
+            await mainLayoutObj.ShowCardMessage(MessageTypes.InformationAction, response.Message, "", "/ClientList");
         }
         catch (Exception ex)
         {
@@ -271,7 +278,7 @@
         NavManager.NavigateTo("/ClientList");
     }
 
-    public async Task CleanFields()
+    public void CleanFields()
     {
         newCustomer = new CustomerDTO();
         StateHasChanged();

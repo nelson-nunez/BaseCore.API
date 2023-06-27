@@ -72,9 +72,8 @@ namespace BaseRest.Core.Business
                 await unitOfWork.CompleteAsync();
                 return entity.Id;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
                 throw;
             }
             finally

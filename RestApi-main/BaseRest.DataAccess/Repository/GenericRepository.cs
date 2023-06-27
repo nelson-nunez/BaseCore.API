@@ -249,15 +249,8 @@ namespace BaseRest.Core.DataAccess.Repository
 
         public virtual void Update(TEntity entityToUpdate)
         {
-            try
-            {
-                //dbSet.Attach(entityToUpdate);
-                context.Entry(entityToUpdate).State = EntityState.Modified;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            dbSet.Attach(entityToUpdate);
+            context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
         #endregion

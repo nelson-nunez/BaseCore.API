@@ -56,14 +56,12 @@
         new ToolbarItem() { Id = "Edit", Text = "Editar", PrefixIcon = "e-edit" },
         new ToolbarItem() { Id = "Ver", Text = "Ver", PrefixIcon = "e-eye" },
         new ToolbarItem() { Id = "Delete", Text = "Eliminar", PrefixIcon = "e-delete" },
-        new ToolbarItem() { Id = "Actualizar", Text = "Actualizar", PrefixIcon = "e-reload" },
+        new ToolbarItem() { Id = "Actualizar", Text = "Actualizar", PrefixIcon = "e-reload-icon" },
     };
 
     #endregion
 
     #region Methods
-
-    #endregion
 
     protected override async void OnInitialized()
     {
@@ -132,4 +130,6 @@
         var listSelectedItem = await this.Grid.GetSelectedRecords();
         SelectedItem = listSelectedItem.FirstOrDefault();
     }
+
+    #endregion
 }
