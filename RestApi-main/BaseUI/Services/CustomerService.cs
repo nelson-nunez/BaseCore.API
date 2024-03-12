@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using BaseRest.Core.API.Common;
 using BaseRest.Core.Model.Base;
 using BaseRest.Core.Model.DTO;
+using Castle.Core.Resource;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Syncfusion.Blazor;
@@ -26,6 +28,9 @@ namespace BaseUI.Services
 
         public async Task<CustomerDTO> GetCustomerbyIdAsync(int id)
         {
+            var response = await httpClient.GetAsync(resource);
+
+
             await baseApiClient.ValidateAccessToken(contextAccessor, navigator);
             var result = await baseApiClient.GetAsync<CustomerDTO>($"Customer/{id}");
             return result;

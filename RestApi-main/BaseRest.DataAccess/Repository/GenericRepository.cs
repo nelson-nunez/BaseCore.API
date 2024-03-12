@@ -160,12 +160,11 @@ namespace BaseRest.Core.DataAccess.Repository
         {
             var query = dbSet.AsQueryable();
 
-
             if (filter != null)
             {
                 query = query.Where(filter);
             }
-            if (!string.IsNullOrEmpty(filterBy) && !string.IsNullOrEmpty(filterBy))
+            if (!string.IsNullOrEmpty(filterBy) && !string.IsNullOrEmpty(filterValue))
                 query = query.GetQueryFilterBy(filterBy, filterValue);
 
             int rowCount = query.Count();
