@@ -12,6 +12,9 @@ namespace BaseRest.Core.Model
 {
     public class DbModelContext : DbContext
     {
+
+        aa  Configure varios appsettings, y entornos arriba pero no esta tomando el appsettings que coprresponde para el entorno seleccionado. Continuar....
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

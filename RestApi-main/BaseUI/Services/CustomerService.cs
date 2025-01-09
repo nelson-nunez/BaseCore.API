@@ -28,7 +28,7 @@ namespace BaseUI.Services
 
         public async Task<CustomerDTO> GetCustomerbyIdAsync(int id)
         {
-            var response = await httpClient.GetAsync(resource);
+            //var response = await httpClient.GetAsync(resource);
 
 
             await baseApiClient.ValidateAccessToken(contextAccessor, navigator);
